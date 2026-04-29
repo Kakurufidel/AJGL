@@ -1,0 +1,202 @@
+================================================================================
+DOCUMENTATION PROJET AJ-GL Asbl
+================================================================================
+Association des Jumeaux des pays des Grands Lacs (RDC, Rwanda, Burundi)
+================================================================================
+Date : 2026
+Version : 1.0
+
+
+================================================================================
+1. RÉSUMÉ DU PROJET
+================================================================================
+
+Création d’un site web complet pour l’association AJ-GL Asbl.
+Le site permet :
+- De présenter l’association (accueil, à propos, actions, réalisations, contact)
+- De gérer les adhésions (un seul formulaire pour tous les membres)
+- Un membre peut être : parent, jumeau/jumelle, ou les deux à la fois
+- Upload de photo possible
+- Interface administrateur pour gérer les membres
+- Version desktop et mobile (responsive)
+
+
+================================================================================
+2. TECHNOLOGIES UTILISÉES
+================================================================================
+
+Backend :
+- Django 4.2 (framework Python)
+- SQLite (base de données en développement)
+- Python 3.10 ou 3.11 ou 3.12
+
+Frontend :
+- Tailwind CSS (framework CSS)
+- HTML5
+- JavaScript léger (menu burger, champs conditionnels)
+
+Versionnement :
+- Git
+- GitHub
+
+Déploiement (plus tard) :
+- PythonAnywhere ou Render
+
+
+================================================================================
+3. STRUCTURE DES FICHIERS UTILES
+================================================================================
+
+Voici l’arborescence du projet (fichiers importants uniquement) :
+
+aj-gl-asbl/
+│
+├── README.md                     # Présentation du projet
+├── .gitignore                    # Fichiers à ne pas versionner
+│
+├── manage.py                     # Commande principale Django
+├── db.sqlite3                    # Base de données
+│
+├── ajgl_project/                 # Dossier de configuration
+│   ├── settings.py               # Configuration (base de données, médias)
+│   └── urls.py                   # Routes principales
+│
+├── core/                         # Application principale
+│   ├── models.py                 # Modèle User (un seul pour tous)
+│   ├── forms.py                  # Formulaire d’adhésion
+│   ├── views.py                  # Pages (accueil, adhésion, etc.)
+│   ├── urls.py                   # Routes de l’application
+│   ├── admin.py                  # Interface d’administration
+│   │
+│   └── templates/
+│       └── core/
+│           ├── base.html         # Template de base
+│           ├── accueil.html
+│           ├── a-propos.html
+│           ├── nos-actions.html
+│           ├── realisations.html
+│           ├── adhesion.html
+│           └── contact.html
+│
+└── media/                        # Dossier pour les photos uploadées
+    └── photos/
+
+
+================================================================================
+4. FICHIERS À MODIFIER (par ordre d’importance)
+================================================================================
+
+| Fichier                    | Rôle                                  |
+|----------------------------|---------------------------------------|
+| core/models.py             | La structure de la base de données    |
+| core/forms.py              | Le formulaire d’adhésion               |
+| core/views.py              | La logique des pages                   |
+| core/urls.py               | Les adresses URL de l’application      |
+| core/templates/core/*.html | L’affichage des pages                  |
+| ajgl_project/settings.py   | Configuration générale                 |
+| ajgl_project/urls.py       | Routes principales                     |
+| core/admin.py              | Gestion des membres dans l’admin       |
+
+
+================================================================================
+5. ÉTAPES À SUIVRE (vue d’ensemble)
+================================================================================
+
+ÉTAPE 1 – Installation des outils
+
+
+ÉTAPE 2 – Préparer l’environnement
+- Créer un dossier pour le projet
+- Créer un environnement virtuel (venv)
+- Activer l’environnement virtuel
+- Installer Django et Pillow
+
+ÉTAPE 3 – Créer le projet Django
+- django-admin startproject ajgl_project
+- python manage.py startapp core
+
+ÉTAPE 4 – Créer le modèle User (table unique)
+- Écrire le modèle dans core/models.py
+- python manage.py makemigrations
+- python manage.py migrate
+- python manage.py createsuperuser
+
+ÉTAPE 5 – Créer le formulaire d’adhésion
+- Écrire core/forms.py
+- Intégrer les champs conditionnels (parent / jumeau)
+
+ÉTAPE 6 – Créer les vues et les templates
+- Écrire core/views.py (accueil, adhésion, etc.)
+- Créer les fichiers HTML dans templates/core/
+
+ÉTAPE 7 – Configurer les URLs
+- Modifier core/urls.py
+- Modifier ajgl_project/urls.py
+
+ÉTAPE 8 – Gérer les fichiers médias (photos)
+- Configurer MEDIA_URL et MEDIA_ROOT dans settings.py
+- Créer le dossier media/photos/
+
+ÉTAPE 9 – Lancer le serveur et tester
+- python manage.py runserver
+- Tester le formulaire et l’administration
+
+
+ÉTAPE 10 – Déployer (plus tard)
+- Choisir PythonAnywhere ou Render
+- Configurer la base de données (SQLite → PostgreSQL)
+- Mettre en ligne
+
+
+================================================================================
+6. RÈGLES SIMPLES POUR TRAVAILLER
+================================================================================
+
+- Une seule étape à la fois
+- Tester avant de passer à l’étape suivante
+- Faire un commit Git après chaque étape réussie
+- Garder cette documentation à côté du code
+
+
+================================================================================
+7. COMMANDES UTILES (rappel)
+================================================================================
+
+| Action                          | Commande                                   |
+|---------------------------------|--------------------------------------------|
+| Activer environnement virtuel   | venv_ajgl\Scripts\activate                 |
+| Installer Django                | pip install django==4.2                    |
+| Installer Pillow (photos)       | pip install pillow                         |
+| Créer les migrations            | python manage.py makemigrations            |
+| Appliquer les migrations        | python manage.py migrate                   |
+| Créer un superutilisateur       | python manage.py createsuperuser           |
+| Lancer le serveur               | python manage.py runserver                 |
+| Voir l’état Git                 | git status                                 |
+| Ajouter tous les fichiers       | git add .                                  |
+| Faire un commit                 | git commit -m "message"                    |
+| Envoyer à GitHub                | git push                                   |
+
+
+================================================================================
+8. LIENS UTILES
+================================================================================
+
+Télécharger Python :
+https://www.python.org/downloads/
+
+Télécharger Git :
+https://git-scm.com/downloads/win
+
+GitHub :
+https://github.com/
+
+Documentation Django :
+https://docs.djangoproject.com/fr/4.2/
+
+Tailwind CSS :
+https://tailwindcss.com/
+
+
+================================================================================
+FIN DE LA DOCUMENTATION
+================================================================================
