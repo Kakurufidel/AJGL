@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJ-GL Asbl - {% block title %}Accueil{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            
+            <!-- LOGO : remplacer le texte par votre image -->
+            <!-- <img src="/media/logos/logo-ajgl.png" alt="AJ-GL Asbl" class="h-12"> -->
+            <div class="text-2xl font-bold text-green-800">AJ-GL Asbl</div>
+            
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="{% url 'accueil' %}" class="text-gray-700 hover:text-green-700">Accueil</a>
+                <a href="{% url 'a-propos' %}" class="text-gray-700 hover:text-green-700">À propos</a>
+                <a href="{% url 'nos-actions' %}" class="text-gray-700 hover:text-green-700">Nos actions</a>
+                <a href="{% url 'realisations' %}" class="text-gray-700 hover:text-green-700">Réalisations</a>
+                <a href="{% url 'adhesion' %}" class="text-gray-700 hover:text-green-700">Adhésion</a>
+                <a href="{% url 'don' %}" class="text-gray-700 hover:text-green-700">Don</a>
+                <a href="{% url 'contact' %}" class="text-gray-700 hover:text-green-700">Contact</a>
+            </nav>
+            
+            <!-- Bouton menu burger (mobile) -->
+            <button id="menu-btn" class="block md:hidden text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <a href="{% url 'accueil' %}" class="block px-4 py-2 hover:bg-gray-100">Accueil</a>
+            <a href="{% url 'a-propos' %}" class="block px-4 py-2 hover:bg-gray-100">À propos</a>
+            <a href="{% url 'nos-actions' %}" class="block px-4 py-2 hover:bg-gray-100">Nos actions</a>
+            <a href="{% url 'realisations' %}" class="block px-4 py-2 hover:bg-gray-100">Réalisations</a>
+            <a href="{% url 'adhesion' %}" class="block px-4 py-2 hover:bg-gray-100">Adhésion</a>
+            <a href="{% url 'don' %}" class="block px-4 py-2 hover:bg-gray-100">Don</a>
+            <a href="{% url 'contact' %}" class="block px-4 py-2 hover:bg-gray-100">Contact</a>
+        </div>
+    </header>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="container mx-auto px-4 py-8">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <!-- Footer logo (optionnel) -->
+            <!-- <img src="/media/logos/logo-footer.png" alt="AJ-GL" class="h-10 mx-auto mb-4"> -->
+            <p class="mb-2">AJ-GL Asbl - Association des Jumeaux des pays des Grands Lacs</p>
+            <p class="mb-2">Goma, Nord-Kivu, République Démocratique du Congo</p>
+            <p>📞 +243 XXX XXX XXX | 📧 contact@aj-gl.org</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

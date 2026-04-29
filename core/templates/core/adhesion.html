@@ -1,0 +1,230 @@
+{% extends 'core/base.html' %}
+{% block title %}Adhésion{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-green-800 mb-2 text-center">Adhésion à l'AJ-GL Asbl</h1>
+    <p class="text-gray-600 text-center mb-8">Rejoignez la communauté des jumeaux des Grands Lacs</p>
+    
+    <!-- Formulaire -->
+    <form method="post" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6">
+        {% csrf_token %}
+        
+        <!-- Affichage des erreurs globales -->
+        {% if form.non_field_errors %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Nom complet -->
+        <div class="mb-4">
+            <label for="{{ form.nom_complet.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                {{ form.nom_complet.label }} *
+            </label>
+            {{ form.nom_complet }}
+            {% if form.nom_complet.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.nom_complet.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Rôles (checkbox multiples) -->
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2">
+                {{ form.type_roles.label }} *
+            </label>
+            <div class="space-x-4">
+                {{ form.type_roles }}
+            </div>
+            {% if form.type_roles.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.type_roles.errors }}</div>
+            {% endif %}
+            <p class="text-gray-500 text-sm mt-1">{{ form.type_roles.help_text }}</p>
+        </div>
+        
+        <!-- Champs pour les jumeaux -->
+        <div id="jumeaux-fields" class="border-l-4 border-orange-300 pl-4 mb-4 hidden">
+            <h3 class="font-bold text-orange-700 mb-2">Informations jumeaux/jumelles/triplés</h3>
+            <div class="mb-3">
+                <label for="{{ form.noms_jumeaux_lies.id_for_label }}" class="block text-gray-700 mb-1">
+                    {{ form.noms_jumeaux_lies.label }}
+                </label>
+                {{ form.noms_jumeaux_lies }}
+            </div>
+        </div>
+        
+        <!-- Champs pour les parents -->
+        <div id="parents-fields" class="border-l-4 border-green-300 pl-4 mb-4 hidden">
+            <h3 class="font-bold text-green-700 mb-2">Informations parents</h3>
+            
+            <div class="grid md:grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label for="{{ form.nom_papa.id_for_label }}" class="block text-gray-700 mb-1">
+                        {{ form.nom_papa.label }}
+                    </label>
+                    {{ form.nom_papa }}
+                </div>
+                <div>
+                    <label for="{{ form.nom_maman.id_for_label }}" class="block text-gray-700 mb-1">
+                        {{ form.nom_maman.label }}
+                    </label>
+                    {{ form.nom_maman }}
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-3">
+                <div>
+                    <label for="{{ form.etat_civil.id_for_label }}" class="block text-gray-700 mb-1">
+                        {{ form.etat_civil.label }}
+                    </label>
+                    {{ form.etat_civil }}
+                </div>
+                <div>
+                    <label for="{{ form.statut_pro.id_for_label }}" class="block text-gray-700 mb-1">
+                        {{ form.statut_pro.label }}
+                    </label>
+                    {{ form.statut_pro }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adresse -->
+        <div class="mb-4">
+            <label for="{{ form.adresse.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                {{ form.adresse.label }} *
+            </label>
+            {{ form.adresse }}
+            {% if form.adresse.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.adresse.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Pays et Ville -->
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="{{ form.pays.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    {{ form.pays.label }} *
+                </label>
+                {{ form.pays }}
+                {% if form.pays.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.pays.errors }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.ville.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    {{ form.ville.label }}
+                </label>
+                {{ form.ville }}
+                {% if form.ville.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.ville.errors }}</div>
+                {% endif %}
+                <p class="text-gray-500 text-sm mt-1">Ex: Goma, Bukavu, Bujumbura, Kigali</p>
+            </div>
+        </div>
+        
+        <!-- Téléphone et Email -->
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="{{ form.telephone.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    {{ form.telephone.label }} *
+                </label>
+                {{ form.telephone }}
+                {% if form.telephone.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.telephone.errors }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.email.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    {{ form.email.label }} *
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Photo -->
+        <div class="mb-4">
+            <label for="{{ form.photo.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                {{ form.photo.label }}
+            </label>
+            {{ form.photo }}
+            {% if form.photo.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.photo.errors }}</div>
+            {% endif %}
+            <p class="text-gray-500 text-sm mt-1">Formats acceptés : JPG, PNG (max 2Mo)</p>
+            <!-- Aperçu de la photo -->
+            <div id="photo-preview" class="mt-2 hidden">
+                <img id="preview-img" class="h-32 w-32 object-cover rounded" alt="Aperçu">
+            </div>
+        </div>
+        
+        <!-- Bouton de soumission -->
+        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2 rounded w-full md:w-auto">
+            S'inscrire
+        </button>
+    </form>
+</div>
+
+<!-- Script pour les champs conditionnels et aperçu photo -->
+<script>
+    // Gestion des champs conditionnels (parents / jumeaux)
+    const roleCheckboxes = document.querySelectorAll('input[name="type_roles"]');
+    const parentFields = document.getElementById('parents-fields');
+    const jumeauxFields = document.getElementById('jumeaux-fields');
+    
+    function toggleFields() {
+        let hasParent = false;
+        let hasJumeau = false;
+        
+        roleCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                if (checkbox.value === 'parent') hasParent = true;
+                if (checkbox.value === 'jumeau' || checkbox.value === 'jumelle') hasJumeau = true;
+            }
+        });
+        
+        if (hasParent) {
+            parentFields.classList.remove('hidden');
+        } else {
+            parentFields.classList.add('hidden');
+        }
+        
+        if (hasJumeau) {
+            jumeauxFields.classList.remove('hidden');
+        } else {
+            jumeauxFields.classList.add('hidden');
+        }
+    }
+    
+    roleCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', toggleFields);
+    });
+    
+    toggleFields();
+    
+    // Aperçu de la photo
+    const photoInput = document.querySelector('input[name="photo"]');
+    const photoPreview = document.getElementById('photo-preview');
+    const previewImg = document.getElementById('preview-img');
+    
+    photoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                photoPreview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            photoPreview.classList.add('hidden');
+        }
+    });
+</script>
+
+{% endblock %}

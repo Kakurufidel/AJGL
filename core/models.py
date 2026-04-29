@@ -167,3 +167,191 @@ class Don(models.Model):
         ordering = ['-date_don']
         verbose_name = "Don"
         verbose_name_plural = "Dons"
+
+# ==========================================
+# MODÈLE ÉVÉNEMENT (formations, apostolas, expositions, activités culturelles, etc.)
+# ==========================================
+
+class Evenement(models.Model):
+    TYPE_EVENEMENT = [
+        ('formation', 'Formation professionnelle'),
+        ('apostolat', 'Apostolat / Visite sociale'),
+        ('exposition', 'Exposition culturelle et artistique'),
+        ('culturel', 'Activité culturelle'),
+        ('sportif', 'Activité sportive (match de football)'),
+        ('celebration', 'Célébration / Anniversaire'),
+        ('assistance', 'Assistance humanitaire'),
+        ('reunion', 'Réunion / Assemblée'),
+        ('autre', 'Autre'),
+    ]
+    
+    STATUT_EVENEMENT = [
+        ('a_venir', 'À venir'),
+        ('en_cours', 'En cours'),
+        ('termine', 'Terminé'),
+        ('annule', 'Annulé'),
+    ]
+    
+    # Informations générales
+    titre = models.CharField(max_length=200, verbose_name="Titre de l'événement")
+    type_event = models.CharField(max_length=50, choices=TYPE_EVENEMENT, verbose_name="Type d'événement")
+    description = models.TextField(verbose_name="Description")
+    
+    # Dates et lieu
+    date_debut = models.DateTimeField(verbose_name="Date de début")
+    date_fin = models.DateTimeField(blank=True, null=True, verbose_name="Date de fin")
+    lieu = models.CharField(max_length=200, verbose_name="Lieu")
+    
+    # Images et médias
+    image = models.ImageField(upload_to='evenements/', blank=True, null=True, verbose_name="Image principale")
+    galerie_images = models.TextField(blank=True, null=True, help_text="URLs des images supplémentaires (séparées par des virgules)", verbose_name="Galerie d'images")
+    
+    # Participants et statistiques
+    nombre_participants = models.IntegerField(default=0, verbose_name="Nombre de participants")
+    nombre_jumeaux_present = models.IntegerField(default=0, verbose_name="Nombre de jumeaux présents")
+    nombre_parents_present = models.IntegerField(default=0, verbose_name="Nombre de parents présents")
+    
+    # Statut et visibilité
+    statut = models.CharField(max_length=20, choices=STATUT_EVENEMENT, default='a_venir', verbose_name="Statut")
+    est_visible_site = models.BooleanField(default=True, verbose_name="Afficher sur le site")
+    
+    # Résultat / compte-rendu (après l'événement)
+    compte_rendu = models.TextField(blank=True, null=True, verbose_name="Compte-rendu / Résultats")
+    
+    # Date de création
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    
+    # ==========================================
+    # LOGIQUE MÉTIER
+    # ==========================================
+    
+    def clean(self):
+        """Validation avant sauvegarde"""
+        from django.utils import timezone
+        
+        # 1. Vérifier que la date de fin est après la date de début
+        if self.date_fin and self.date_fin <= self.date_debut:
+            raise ValidationError({'date_fin': "La date de fin doit être postérieure à la date de début"})
+        
+        # 2. Vérifier que le nombre de participants est cohérent
+        if self.nombre_participants < 0:
+            raise ValidationError({'nombre_participants': "Le nombre de participants ne peut pas être négatif"})
+    
+    def save(self, *args, **kwargs):
+        """Sauvegarde avec mise à jour automatique du statut"""
+        from django.utils import timezone
+        
+        # Mise à jour automatique du statut basé sur les dates
+        if self.date_debut > timezone.now():
+            self.statut = 'a_venir'
+        elif self.date_debut <= timezone.now() and (not self.date_fin or self.date_fin >= timezone.now()):
+            self.statut = 'en_cours'
+        elif self.date_fin and self.date_fin < timezone.now():
+            self.statut = 'termine'
+        
+        self.full_clean()
+        super().save(*args, **kwargs)
+    
+    def est_passe(self):
+        """Vrai si l'événement est terminé"""
+        from django.utils import timezone
+        if self.date_fin:
+            return self.date_fin < timezone.now()
+        return self.date_debut < timezone.now()
+    
+    def duree_en_heures(self):
+        """Calcule la durée de l'événement en heures"""
+        if self.date_fin:
+            delta = self.date_fin - self.date_debut
+            return round(delta.total_seconds() / 3600, 1)
+        return None
+    
+    def total_participants(self):
+        """Retourne le nombre total de participants (jumeaux + parents)"""
+        return self.nombre_jumeaux_present + self.nombre_parents_present
+    
+    def get_galerie_list(self):
+        """Retourne la liste des URLs des images de la galerie"""
+        if self.galerie_images:
+            return [url.strip() for url in self.galerie_images.split(',') if url.strip()]
+        return []
+    
+    def __str__(self):
+        return f"{self.titre} - {self.date_debut.strftime('%d/%m/%Y')}"
+    
+    class Meta:
+        ordering = ['-date_debut']
+        verbose_name = "Événement"
+        verbose_name_plural = "Événements"
+
+
+# ==========================================
+# MODÈLE ACTUALITÉ
+# ==========================================
+
+class Actualite(models.Model):
+    CATEGORIE_ACTUALITE = [
+        ('annonce', 'Annonce officielle'),
+        ('evenement', 'Retour sur événement'),
+        ('temoignage', 'Témoignage'),
+        ('partenariat', 'Partenariat'),
+        ('appel', 'Appel à participation'),
+        ('autre', 'Autre'),
+    ]
+    
+    # Informations principales
+    titre = models.CharField(max_length=200, verbose_name="Titre")
+    slug = models.SlugField(max_length=200, unique=True, blank=True, verbose_name="URL personnalisée")
+    contenu = models.TextField(verbose_name="Contenu")
+    extrait = models.TextField(blank=True, null=True, max_length=300, verbose_name="Extrait (résumé)")
+    categorie = models.CharField(max_length=50, choices=CATEGORIE_ACTUALITE, default='annonce', verbose_name="Catégorie")
+    
+    # Images
+    image_principale = models.ImageField(upload_to='actualites/', blank=True, null=True, verbose_name="Image principale")
+    
+    # Visibilité
+    est_publie = models.BooleanField(default=True, verbose_name="Publié ?")
+    date_publication = models.DateTimeField(auto_now_add=True, verbose_name="Date de publication")
+    date_modification = models.DateTimeField(auto_now=True, verbose_name="Date de modification")
+    
+    # Pour les actualités liées à un événement
+    evenement_lie = models.ForeignKey(
+        'Evenement', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        verbose_name="Événement lié"
+    )
+    
+    # ==========================================
+    # LOGIQUE MÉTIER
+    # ==========================================
+    
+    def save(self, *args, **kwargs):
+        """Génération automatique du slug si non fourni"""
+        if not self.slug:
+            import re
+            self.slug = re.sub(r'[^a-z0-9]+', '-', self.titre.lower()).strip('-')
+        super().save(*args, **kwargs)
+    
+    def get_extrait(self):
+        """Retourne l'extrait ou les 150 premiers caractères du contenu"""
+        if self.extrait:
+            return self.extrait
+        if len(self.contenu) > 150:
+            return self.contenu[:150] + "..."
+        return self.contenu
+    
+    def est_recent(self):
+        """Vrai si l'actualité date de moins de 7 jours"""
+        from django.utils import timezone
+        from datetime import timedelta
+        return self.date_publication >= (timezone.now() - timedelta(days=7))
+    
+    def __str__(self):
+        return self.titre
+    
+    class Meta:
+        ordering = ['-date_publication']
+        verbose_name = "Actualité"
+        verbose_name_plural = "Actualités"
