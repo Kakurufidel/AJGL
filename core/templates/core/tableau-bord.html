@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold text-green-800 mb-4">Tableau de bord</h1>
+    <p class="mb-6">Bienvenue, {{ request.user.username }} !</p>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <a href="/admin-ajgl/core/evenement/" class="block bg-green-100 p-4 rounded-lg text-center hover:bg-green-200">
+            📅 Gérer les événements
+        </a>
+        <a href="/admin-ajgl/core/actualite/" class="block bg-green-100 p-4 rounded-lg text-center hover:bg-green-200">
+            📝 Gérer les actualités
+        </a>
+        <a href="/admin-ajgl/core/user/" class="block bg-green-100 p-4 rounded-lg text-center hover:bg-green-200">
+            👥 Voir les membres
+        </a>
+        <a href="/admin-ajgl/core/don/" class="block bg-green-100 p-4 rounded-lg text-center hover:bg-green-200">
+            💰 Voir les dons
+        </a>
+    </div>
+    
+    <a href="{% url 'deconnexion' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+        Se déconnecter
+    </a>
+</div>
+{% endblock %}

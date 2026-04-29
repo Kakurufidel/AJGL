@@ -9,4 +9,7 @@ urlpatterns = [
     path('adhesion/', views.AdhesionView.as_view(), name='adhesion'),
     path('don/', views.DonView.as_view(), name='don'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('connexion/', views.ConnexionView.as_view(), name='connexion'),
+    path('deconnexion/', views.DeconnexionView.as_view(), name='deconnexion'),
+    path('tableau-de-bord/', views.TableauBordView.as_view(), name='tableau-bord'),
 ]

@@ -3,6 +3,10 @@ from django.views import View
 from django.contrib import messages
 from .forms import UserForm, DonForm
 from .models import User, Don
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
 
 # ==========================================
 # PAGE D'ACCUEIL
@@ -21,6 +25,31 @@ class AProposView(View):
     def get(self, request):
         return render(request, 'core/a-propos.html')
 
+
+
+
+# ==========================================
+# CONNEXION / DÉCONNEXION
+# ==========================================
+
+class ConnexionView(LoginView):
+    template_name = 'core/login.html'
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return '/tableau-de-bord/'
+
+class DeconnexionView(LogoutView):
+    next_page = 'accueil'
+
+# ==========================================
+# TABLEAU DE BORD (pour les éditeurs)
+# ==========================================
+
+@method_decorator(login_required, name='dispatch')
+class TableauBordView(View):
+    def get(self, request):
+        return render(request, 'core/tableau-bord.html')
 
 # ==========================================
 # PAGE NOS ACTIONS

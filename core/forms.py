@@ -113,3 +113,36 @@ class DonForm(forms.ModelForm):
         
         # Le champ est_membre a une classe spéciale
         self.fields['est_membre'].widget.attrs.update({'class': 'mr-2'})
+        
+# ==========================================
+# FORMULAIRE DE COTISATION
+# ==========================================
+
+class CotisationForm(forms.ModelForm):
+    class Meta:
+        model = Cotisation
+        fields = [
+            'membre',
+            'montant',
+            'periode',
+            'statut',
+            'date_debut',
+            'date_fin',
+            'methode_paiement',
+            'reference_paiement',
+            'commentaire',
+        ]
+        widgets = {
+            'date_debut': forms.DateInput(attrs={'type': 'date', 'class': 'w-full border rounded px-3 py-2'}),
+            'date_fin': forms.DateInput(attrs={'type': 'date', 'class': 'w-full border rounded px-3 py-2'}),
+            'commentaire': forms.Textarea(attrs={'rows': 3, 'class': 'w-full border rounded px-3 py-2'}),
+            'membre': forms.Select(attrs={'class': 'w-full border rounded px-3 py-2'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if not isinstance(self.fields[field].widget, forms.DateInput):
+                if not isinstance(self.fields[field].widget, forms.Select):
+                    if not hasattr(self.fields[field].widget, 'attrs'):
+                        self.fields[field].widget.attrs.update({'class': 'w-full border rounded px-3 py-2'})

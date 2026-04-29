@@ -355,3 +355,83 @@ class Actualite(models.Model):
         ordering = ['-date_publication']
         verbose_name = "Actualité"
         verbose_name_plural = "Actualités"
+        
+# ==========================================
+# MODÈLE COTISATION (membres uniquement)
+# ==========================================
+
+class Cotisation(models.Model):
+    STATUT_CHOICES = [
+        ('paye', 'Payé'),
+        ('en_attente', 'En attente'),
+        ('en_retard', 'En retard'),
+        ('exonere', 'Exonéré'),
+    ]
+    
+    PERIODE_CHOICES = [
+        ('mensuelle', 'Mensuelle'),
+        ('trimestrielle', 'Trimestrielle'),
+        ('semestrielle', 'Semestrielle'),
+        ('annuelle', 'Annuelle'),
+    ]
+    
+    # Lien vers le membre (obligatoire)
+    membre = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name="Membre")
+    
+    # Informations sur la cotisation
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant (€)")
+    periode = models.CharField(max_length=20, choices=PERIODE_CHOICES, default='annuelle', verbose_name="Périodicité")
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='en_attente', verbose_name="Statut")
+    
+    # Dates
+    date_debut = models.DateField(verbose_name="Date de début")
+    date_fin = models.DateField(verbose_name="Date de fin", blank=True, null=True)
+    date_paiement = models.DateTimeField(blank=True, null=True, verbose_name="Date de paiement")
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    
+    # Méthode de paiement et référence
+    methode_paiement = models.CharField(max_length=50, blank=True, null=True, verbose_name="Méthode de paiement")
+    reference_paiement = models.CharField(max_length=100, blank=True, null=True, verbose_name="Référence")
+    commentaire = models.TextField(blank=True, null=True, verbose_name="Commentaire")
+    
+    # ==========================================
+    # LOGIQUE MÉTIER
+    # ==========================================
+    
+    def clean(self):
+        """Validation avant sauvegarde"""
+        if self.montant <= 0:
+            raise ValidationError({'montant': "Le montant doit être supérieur à 0€"})
+        
+        if self.date_debut and self.date_fin and self.date_fin <= self.date_debut:
+            raise ValidationError({'date_fin': "La date de fin doit être postérieure à la date de début"})
+        
+        if self.statut == 'paye' and not self.date_paiement:
+            from django.utils import timezone
+            self.date_paiement = timezone.now()
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+    
+    def est_actif(self):
+        """Vrai si la cotisation est encore valide"""
+        from django.utils import timezone
+        if self.statut == 'paye' and self.date_fin:
+            return self.date_fin >= timezone.now().date()
+        return False
+    
+    def est_en_retard(self):
+        """Vrai si la cotisation est en retard"""
+        from django.utils import timezone
+        if self.statut != 'paye' and self.date_fin and self.date_fin < timezone.now().date():
+            return True
+        return False
+    
+    def __str__(self):
+        return f"{self.membre.nom_complet} - {self.montant}€ - {self.statut}"
+    
+    class Meta:
+        ordering = ['-date_creation']
+        verbose_name = "Cotisation"
+        verbose_name_plural = "Cotisations"
