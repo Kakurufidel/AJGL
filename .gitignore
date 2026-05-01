@@ -8,3 +8,4 @@ staticfiles/
 .DS_Store
 *.log
 .env
+core\static\css\tailwind.css

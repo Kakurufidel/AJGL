@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User,Cotisation
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class UserAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    from .models import Cotisation
+
 
 @admin.register(Cotisation)
 class CotisationAdmin(admin.ModelAdmin):

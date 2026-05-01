@@ -1,12 +1,24 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
+
 
 # ==========================================
 # MODÈLE USER (MEMBRE)
 # ==========================================
 
-class User(models.Model):
-    # Choix pour les listes déroulantes
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.core.exceptions import ValidationError
+
+class User(AbstractUser):
+    # Supprimer le champ username par défaut pour utiliser email à la place
+    username = None
+    # Remplacer par email comme identifiant principal
+    email = models.EmailField(unique=True)
+    
+    # Champs supplémentaires pour l'association
     ROLES = [
         ('parent', 'Parent'),
         ('jumeau', 'Jumeau'),
@@ -34,33 +46,27 @@ class User(models.Model):
         ('Burundi', 'Burundi'),
     ]
     
-    # Champs principaux obligatoires
+    # Champs personnalisés
     nom_complet = models.CharField(max_length=100)
     adresse = models.TextField(help_text="Commune, Quartier, Avenue")
     pays = models.CharField(max_length=20, choices=PAYS, default='RDC')
-    ville = models.CharField(max_length=100, blank=True, null=True, help_text="Ex: Goma, Bukavu, Bujumbura, Kigali")
+    ville = models.CharField(max_length=100, blank=True, null=True)
     telephone = models.CharField(max_length=20)
-    email = models.EmailField(unique=True)
     
-    # Champs pour les jumeaux
-    noms_jumeaux_lies = models.TextField(blank=True, null=True, help_text="Noms des jumeaux/triplés (séparés par des virgules)")
-    
-    # Champs pour les parents
+    noms_jumeaux_lies = models.TextField(blank=True, null=True)
     nom_papa = models.CharField(max_length=100, blank=True, null=True)
     nom_maman = models.CharField(max_length=100, blank=True, null=True)
     etat_civil = models.CharField(max_length=20, choices=ETAT_CIVIL, blank=True, null=True)
     statut_pro = models.CharField(max_length=20, choices=STATUT_PRO, blank=True, null=True)
     
-    # Photo et rôles
     photo = models.ImageField(upload_to='photos/', blank=True, null=True)
     type_roles = models.CharField(max_length=50, help_text="parent,jumeau ou parent ou jumeau")
     
-    # Date d'inscription
     date_inscription = models.DateTimeField(auto_now_add=True)
     
-    # ==========================================
-    # VALIDATIONS
-    # ==========================================
+    # Utiliser l'email comme identifiant
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['nom_complet', 'telephone']
     
     def clean(self):
         if self.pk is None:
@@ -74,10 +80,6 @@ class User(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
     
-    # ==========================================
-    # UTILITAIRES
-    # ==========================================
-    
     def __str__(self):
         return f"{self.nom_complet} ({self.get_pays_display()})"
     
@@ -88,9 +90,6 @@ class User(models.Model):
         ordering = ['-date_inscription']
         verbose_name = "Membre"
         verbose_name_plural = "Membres"
-        unique_together = ['nom_complet', 'email']
-
-
 # ==========================================
 # MODÈLE DON
 # ==========================================
@@ -227,7 +226,6 @@ class Evenement(models.Model):
     
     def clean(self):
         """Validation avant sauvegarde"""
-        from django.utils import timezone
         
         # 1. Vérifier que la date de fin est après la date de début
         if self.date_fin and self.date_fin <= self.date_debut:
@@ -239,7 +237,6 @@ class Evenement(models.Model):
     
     def save(self, *args, **kwargs):
         """Sauvegarde avec mise à jour automatique du statut"""
-        from django.utils import timezone
         
         # Mise à jour automatique du statut basé sur les dates
         if self.date_debut > timezone.now():
@@ -254,7 +251,6 @@ class Evenement(models.Model):
     
     def est_passe(self):
         """Vrai si l'événement est terminé"""
-        from django.utils import timezone
         if self.date_fin:
             return self.date_fin < timezone.now()
         return self.date_debut < timezone.now()
@@ -344,8 +340,6 @@ class Actualite(models.Model):
     
     def est_recent(self):
         """Vrai si l'actualité date de moins de 7 jours"""
-        from django.utils import timezone
-        from datetime import timedelta
         return self.date_publication >= (timezone.now() - timedelta(days=7))
     
     def __str__(self):
@@ -416,14 +410,12 @@ class Cotisation(models.Model):
     
     def est_actif(self):
         """Vrai si la cotisation est encore valide"""
-        from django.utils import timezone
         if self.statut == 'paye' and self.date_fin:
             return self.date_fin >= timezone.now().date()
         return False
     
     def est_en_retard(self):
         """Vrai si la cotisation est en retard"""
-        from django.utils import timezone
         if self.statut != 'paye' and self.date_fin and self.date_fin < timezone.now().date():
             return True
         return False

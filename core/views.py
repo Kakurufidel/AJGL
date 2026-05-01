@@ -81,17 +81,17 @@ class AdhesionView(View):
     def post(self, request):
         form = UserForm(request.POST, request.FILES)
         if form.is_valid():
-            # Récupérer les rôles cochés
-            roles = form.cleaned_data.get('type_roles')
-            # Sauvegarder l'utilisateur
             user = form.save(commit=False)
-            user.type_roles = ','.join(roles)  # "parent,jumeau" ou "parent" ou "jumeau"
+            roles = ','.join(form.cleaned_data['type_roles'])
+            user.type_roles = roles
+            user.set_password(form.cleaned_data['password1'])
             user.save()
-            messages.success(request, "Votre inscription a bien été enregistrée !")
-            return redirect('adhesion')
+            # Connexion automatique après inscription
+            from django.contrib.auth import login
+            login(request, user)
+            messages.success(request, "Inscription réussie ! Bienvenue !")
+            return redirect('accueil')
         return render(request, 'core/adhesion.html', {'form': form})
-
-
 # ==========================================
 # PAGE DON (formulaire)
 # ==========================================
