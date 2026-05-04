@@ -1,0 +1,18 @@
+{
+  "name": "ajgl",
+  "version": "1.0.0",
+  "description": "Site web pour l'AJ-GL Asbl",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "npx tailwindcss -i ./core/static/css/styles.css -o ./core/static/css/tailwind.css --minify",
+    "watch-css": "npx tailwindcss -i ./core/static/css/styles.css -o ./core/static/css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": []
+}

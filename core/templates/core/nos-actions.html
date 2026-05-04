@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Nos actions{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-3 sm:px-4">
+    
+    <div class="text-center mb-8 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-4">Nos actions</h1>
+        <div class="w-20 h-1 bg-orange-500 mx-auto"></div>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+            Découvrez nos différentes actions sociales, humanitaires et éducatives
+        </p>
+    </div>
+
+    <!-- Action caritative -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2">
+                <img src="/media/images/action.jpg" alt="Actions caritatives" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🤝</span>
+                    <h2 class="text-2xl font-bold text-green-800">Actions caritatives</h2>
+                </div>
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                    L'AJ-GL Asbl mène des actions sociales pour soutenir les familles des jumeaux en situation de vulnérabilité :
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    <li>Assistance lors des deuils</li>
+                    <li>Soutien pour les mariages</li>
+                    <li>Aide aux victimes d'incendies</li>
+                    <li>Accompagnement des naissances multiples</li>
+                    <li>Assistance humanitaire dans les camps (1000+ familles en 2024)</li>
+                </ul>
+                <a href="{% url 'adhesion' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
+                    Participer à nos actions
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apostolats / Visites sociales -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row-reverse">
+            <div class="md:w-1/2">
+                <img src="/media/images/apostola.jpeg" alt="Apostolats" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🙏</span>
+                    <h2 class="text-2xl font-bold text-green-800">Apostolats / Visites sociales</h2>
+                </div>
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                    Des visites régulières sont organisées pour apporter réconfort et soutien aux familles :
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    <li>Visite aux malades</li>
+                    <li>Réconfort des familles endeuillées</li>
+                    <li>Soutien psychologique aux jumeaux</li>
+                    <li>Création de liens de solidarité</li>
+                    <li>Célébrations spirituelles et culturelles</li>
+                </ul>
+                <a href="{% url 'contact' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
+                    Nous rejoindre
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formations professionnelles -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2">
+                <img src="/media/images/activite.jpg" alt="Formations" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">📚</span>
+                    <h2 class="text-2xl font-bold text-green-800">Formations gratuites</h2>
+                </div>
+                <p class="text-gray-700 mb-4 leading-relaxed">
+                    Des formations en arts et métiers sont offertes gratuitement aux jumeaux :
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    <li>Décoration d'intérieur</li>
+                    <li>Arts plastiques</li>
+                    <li>Photographie et vidéo</li>
+                    <li>Coupe et couture</li>
+                    <li>Exposition publique des œuvres (2023)</li>
+                </ul>
+                <a href="{% url 'adhesion' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
+                    S'inscrire à la formation
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lipasa Services -->
+    <div class="bg-gradient-to-r from-green-700 to-green-600 rounded-lg p-6 md:p-8 text-white text-center">
+        <div class="flex items-center justify-center mb-3">
+            <span class="text-3xl mr-2">🍽️</span>
+            <h2 class="text-2xl font-bold">Lipasa Services</h2>
+        </div>
+        <p class="mb-3 max-w-2xl mx-auto">
+            Service traiteur et protocole créé pour offrir une activité génératrice de revenus (AGR) aux jumeaux.
+        </p>
+        <p class="text-sm opacity-90 mb-4">Prestations : traiteur, protocole, décoration d'événements</p>
+        <a href="{% url 'contact' %}" class="inline-block bg-white text-green-800 px-6 py-2 rounded hover:bg-gray-100 transition">
+            Contacter Lipasa Services
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Réalisations{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-3 sm:px-4">
+    
+    <div class="text-center mb-8 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-4">Nos réalisations</h1>
+        <div class="w-20 h-1 bg-orange-500 mx-auto"></div>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+            Depuis 2021, l'AJ-GL Asbl a accompli de grandes choses pour les jumeaux des Grands Lacs
+        </p>
+    </div>
+
+    <!-- Équipe protocolaire Lipasa Services -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2">
+                <img src="/media/images/lipasa-team.jpeg" alt="Équipe protocolaire Lipasa" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">👔</span>
+                    <h2 class="text-2xl font-bold text-green-800">Équipe protocolaire Lipasa Services</h2>
+                </div>
+                <p class="text-gray-700 mb-3 leading-relaxed">
+                    <strong class="text-orange-600">Mise en place d'une équipe protocolaire professionnelle</strong> composée de jumeaux formés aux métiers de l'accueil et du service.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4 text-sm">
+                    <li>Une équipe de 12 jeunes jumeaux formés</li>
+                    <li>Spécialistes en protocole et cérémonies</li>
+                    <li>Prestations lors des événements officiels</li>
+                    <li>Reconnue pour son professionnalisme</li>
+                </ul>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Service traiteur</span>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Protocole événementiel</span>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Décoration</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cellules de quartier -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row-reverse">
+            <div class="md:w-1/2">
+                <img src="/media/images/cellules.jpeg" alt="Cellules de quartier" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🏘️</span>
+                    <h2 class="text-2xl font-bold text-green-800">Cellules de quartier</h2>
+                </div>
+                <p class="text-gray-700 mb-3 leading-relaxed">
+                    <strong class="text-orange-600">Création de cellules locales</strong> dans plusieurs quartiers de Goma pour rapprocher l'association des membres.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4 text-sm">
+                    <li>Réunions mensuelles par quartier</li>
+                    <li>Animées par des coordinateurs locaux</li>
+                    <li>Meilleure mobilisation des familles</li>
+                    <li>Assemblées générales semestrielles</li>
+                </ul>
+                <a href="{% url 'contact' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
+                    Rejoindre une cellule
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Événements marquants -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2">
+                <img src="/media/images/evenement.jpeg" alt="Événements AJ-GL" class="w-full h-64 md:h-80 object-cover">
+            </div>
+            <div class="md:w-1/2 p-6 md:p-8">
+                <div class="flex items-center mb-3">
+                    <span class="text-3xl mr-3">🎉</span>
+                    <h2 class="text-2xl font-bold text-green-800">Événements marquants</h2>
+                </div>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 text-sm">
+                    <li><strong class="text-green-700">2022</strong> : 1er anniversaire avec 50+ jumeaux et match de football</li>
+                    <li><strong class="text-green-700">2023</strong> : Exposition publique des œuvres d'art et émission sur Radio Océan FM</li>
+                    <li><strong class="text-green-700">2024</strong> : Assistance à 1000+ familles dans les camps de Don Bosco Ngangi</li>
+                    <li><strong class="text-green-700">2024</strong> : Exposition artistique et culturelle pour les 3 ans</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg p-4 text-center">
+            <div class="text-3xl font-bold">1000+</div>
+            <div class="text-xs">Familles assistées</div>
+        </div>
+        <div class="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg p-4 text-center">
+            <div class="text-3xl font-bold">50+</div>
+            <div class="text-xs">Jumeaux au 1er anniversaire</div>
+        </div>
+        <div class="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg p-4 text-center">
+            <div class="text-3xl font-bold">3</div>
+            <div class="text-xs">Pays d'action</div>
+        </div>
+        <div class="bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg p-4 text-center">
+            <div class="text-3xl font-bold">12</div>
+            <div class="text-xs">Membres équipe Lipasa</div>
+        </div>
+    </div>
+
+    <!-- Partenaires -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 class="text-xl font-bold text-green-800 text-center mb-4">Nos partenaires</h3>
+        <div class="flex flex-wrap justify-center gap-4">
+            <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">🇰🇪 Kenya</span>
+            <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">🇿🇼 Zimbabwe</span>
+            <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">🌍 ATA (Afrique)</span>
+            <span class="bg-gray-100 px-4 py-2 rounded-full text-sm">🇦🇺 ICOMBO (Australie)</span>
+        </div>
+    </div>
+
+    <!-- Appel à action -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg p-6 text-center text-white">
+        <h3 class="text-xl font-bold mb-2">Vous souhaitez participer à nos prochaines réalisations ?</h3>
+        <p class="mb-4">Devenez membre ou partenaire de l'AJ-GL Asbl</p>
+        <a href="{% url 'adhesion' %}" class="bg-white text-orange-600 px-6 py-2 rounded hover:bg-gray-100 transition inline-block">
+            Rejoindre l'association
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,19 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJ-GL Asbl - {% block title %}Accueil{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}"></head>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+
 <body class="bg-gray-50 font-sans">
 
     <!-- HEADER -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             
-            <!-- LOGO : remplacer le texte par votre image -->
-            <!-- <img src="/media/logos/logo-ajgl.png" alt="AJ-GL Asbl" class="h-12"> -->
+            <!-- LOGO -->
             <div class="text-2xl font-bold text-green-800">AJ-GL Asbl</div>
             
             <!-- Menu Desktop -->
@@ -23,9 +24,42 @@
                 <a href="{% url 'nos-actions' %}" class="text-gray-700 hover:text-green-700">Nos actions</a>
                 <a href="{% url 'realisations' %}" class="text-gray-700 hover:text-green-700">Réalisations</a>
                 <a href="{% url 'adhesion' %}" class="text-gray-700 hover:text-green-700">Adhésion</a>
-                <a href="{% url 'don' %}" class="text-gray-700 hover:text-green-700">Don</a>
                 <a href="{% url 'contact' %}" class="text-gray-700 hover:text-green-700">Contact</a>
             </nav>
+            
+            <!-- Avatars et connexion (Desktop) -->
+            <div class="hidden md:flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <div class="relative group">
+                        <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold cursor-pointer">
+                            {{ user.nom_complet|slice:":2"|upper }}
+                        </div>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl hidden group-hover:block z-50">
+                            <div class="p-3 border-b">
+                                <p class="font-semibold">{{ user.nom_complet }}</p>
+                                <p class="text-sm text-gray-500">{{ user.email }}</p>
+                            </div>
+                            <div class="py-2">
+                                <a href="{% url 'mes_cotisations' %}" class="block px-4 py-2 hover:bg-gray-100">📋 Mes cotisations</a>
+                                <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-gray-100">👤 Mon profil</a>
+                                {% if user.is_superuser or user.groups.all %}
+                                    <a href="{% url 'tableau-bord' %}" class="block px-4 py-2 hover:bg-gray-100">⚙️ Administration</a>
+                                {% endif %}
+                                <hr class="my-1">
+                                <form action="{% url 'deconnexion' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                                        🚪 Se déconnecter
+                                    </button>
+                                </form>                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'connexion' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                        Se connecter
+                    </a>
+                {% endif %}
+            </div>
             
             <!-- Bouton menu burger (mobile) -->
             <button id="menu-btn" class="block md:hidden text-gray-700">
@@ -42,14 +76,38 @@
             <a href="{% url 'nos-actions' %}" class="block px-4 py-2 hover:bg-gray-100">Nos actions</a>
             <a href="{% url 'realisations' %}" class="block px-4 py-2 hover:bg-gray-100">Réalisations</a>
             <a href="{% url 'adhesion' %}" class="block px-4 py-2 hover:bg-gray-100">Adhésion</a>
-            <a href="{% url 'don' %}" class="block px-4 py-2 hover:bg-gray-100">Don</a>
             <a href="{% url 'contact' %}" class="block px-4 py-2 hover:bg-gray-100">Contact</a>
-                    {% if user.is_authenticated %}
-            <a href="{% url 'tableau-bord' %}" class="text-green-700 font-bold">Tableau de bord</a>
-            <a href="{% url 'deconnexion' %}" class="text-red-500">Déconnexion</a>
-        {% else %}
-            <a href="{% url 'connexion' %}" class="text-gray-700 hover:text-green-700">Connexion</a>
-        {% endif %}
+            
+            {% if user.is_authenticated %}
+                <div class="border-t mt-2 pt-2">
+                    <div class="px-4 py-2 bg-gray-50">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
+                                {{ user.nom_complet|slice:":2"|upper }}
+                            </div>
+                            <div>
+                                <p class="font-semibold">{{ user.nom_complet }}</p>
+                                <p class="text-sm text-gray-500">{{ user.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'mes_cotisations' %}" class="block px-4 py-2 hover:bg-gray-100">📋 Mes cotisations</a>
+                    <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-gray-100">👤 Mon profil</a>
+                    {% if user.is_superuser or user.groups.all %}
+                        <a href="{% url 'tableau-bord' %}" class="block px-4 py-2 hover:bg-gray-100">⚙️ Administration</a>
+                    {% endif %}
+                    <form action="{% url 'deconnexion' %}" method="post" class="block">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                            🚪 Se déconnecter
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <a href="{% url 'connexion' %}" class="block px-4 py-2 bg-orange-500 text-white text-center m-2 rounded">
+                    Se connecter
+                </a>
+            {% endif %}
         </div>
     </header>
 
@@ -68,21 +126,136 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-800 text-white py-6 mt-8">
-        <div class="container mx-auto px-4 text-center">
-            <!-- Footer logo (optionnel) -->
-            <!-- <img src="/media/logos/logo-footer.png" alt="AJ-GL" class="h-10 mx-auto mb-4"> -->
-            <p class="mb-2">AJ-GL Asbl - Association des Jumeaux des pays des Grands Lacs</p>
-            <p class="mb-2">Goma, Nord-Kivu, République Démocratique du Congo</p>
-            <p>📞 +243 995 584 501 | 📧 kakurukalinda2@gmail.com</p>
+    <!-- FOOTER -->
+<footer class="bg-gray-900 text-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Colonne 1 : À propos -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-orange-400">AJ-GL Asbl</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Association des Jumeaux des pays des Grands Lacs.<br>
+                    Ensemble pour les jumeaux, jumelles, triplés et leurs familles.
+                </p>
+            </div>
+            
+            <!-- Colonne 2 : Liens rapides -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-orange-400">Liens rapides</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'accueil' %}" class="text-gray-400 hover:text-orange-400 transition">Accueil</a></li>
+                    <li><a href="{% url 'a-propos' %}" class="text-gray-400 hover:text-orange-400 transition">À propos</a></li>
+                    <li><a href="{% url 'nos-actions' %}" class="text-gray-400 hover:text-orange-400 transition">Nos actions</a></li>
+                    <li><a href="{% url 'realisations' %}" class="text-gray-400 hover:text-orange-400 transition">Réalisations</a></li>
+                    <li><a href="{% url 'adhesion' %}" class="text-gray-400 hover:text-orange-400 transition">Adhésion</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-gray-400 hover:text-orange-400 transition">Contact</a></li>
+                </ul>
+            </div>
+            
+            <!-- Colonne 3 : Contact rapide -->
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-orange-400">Contactez-nous</h3>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li class="flex items-center">
+                        <span class="mr-2">📍</span> Goma, Nord-Kivu, RDC
+                    </li>
+                    <li class="flex items-center">
+                        <span class="mr-2">📞</span> +243 995 584 501
+                    </li>
+                    <li class="flex items-center">
+                        <span class="mr-2">📧</span> kakurukalinda2@gmail.com
+                    </li>
+                    <li class="flex items-center">
+                        <span class="mr-2">💬</span> WhatsApp : +243 995 584 501
+                    </li>
+                </ul>
+                <div class="flex space-x-3 mt-4">
+                    <a href="https://wa.me/243995584501" target="_blank" class="bg-green-600 hover:bg-green-700 p-2 rounded-full transition">💬</a>
+                    <a href="#" class="bg-blue-600 hover:bg-blue-700 p-2 rounded-full transition">📘</a>
+                    <a href="#" class="bg-pink-600 hover:bg-pink-700 p-2 rounded-full transition">📷</a>
+                </div>
+            </div>
         </div>
-    </footer>
-
+        
+        <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 AJ-GL Asbl - Tous droits réservés.</p>
+        </div>
+    </div>
+</footer>
     <script>
         document.getElementById('menu-btn').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
     </script>
+
+   <!-- Toast notification system -->
+<div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2 w-80 md:w-96">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast bg-white rounded-lg shadow-lg border-l-4 
+                {% if message.tags == 'success' %}border-green-500
+                {% elif message.tags == 'error' %}border-red-500
+                {% else %}border-blue-500{% endif %} 
+                p-4 transform transition-all duration-300 animate-slide-in">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        {% if message.tags == 'success' %}
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        {% elif message.tags == 'error' %}
+                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        {% else %}
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-gray-800 text-sm">{{ message|safe }}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+    // Auto-disparition des toasts après 5 secondes
+    document.querySelectorAll('.toast').forEach(toast => {
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (toast.parentElement) toast.remove();
+            }, 300);
+        }, 5000);
+    });
+</script>
+
+<style>
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    .animate-slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+</style> 
 </body>
 </html>

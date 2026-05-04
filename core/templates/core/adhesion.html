@@ -1,14 +1,25 @@
 {% extends 'core/base.html' %}
+{% load static %}
+
 {% block title %}Adhésion{% endblock %}
 
 {% block content %}
 
 <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold text-green-800 mb-2 text-center">Adhésion à l'AJ-GL Asbl</h1>
+    <h1 class="text-2xl md:text-3xl font-bold text-green-800 mb-2 text-center">📝 Adhésion à l'AJ-GL Asbl</h1>
     <p class="text-gray-600 text-center mb-8">Rejoignez la communauté des jumeaux des Grands Lacs</p>
     
+    <!-- Message d'information -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded">
+        <p class="text-blue-800 text-sm">
+            💡 <strong>Parent de jumeaux ?</strong> Remplissez votre identité et celle de vos enfants.<br>
+            💡 <strong>Jumeau(elle) ?</strong> Remplissez votre identité et celle de votre/vos jumeau(x).<br>
+            💡 <strong>Parent ET jumeau(elle) ?</strong> Cochez les deux cases.
+        </p>
+    </div>
+    
     <!-- Formulaire -->
-    <form method="post" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6">
+    <form method="post" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-4 md:p-6">
         {% csrf_token %}
         
         <!-- Affichage des erreurs globales -->
@@ -20,10 +31,44 @@
             </div>
         {% endif %}
         
-        <!-- Nom complet -->
+        <!-- 1. EMAIL (identifiant) -->
+        <div class="mb-4">
+            <label for="{{ form.email.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                📧 {{ form.email.label }} *
+            </label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.email.errors }}</div>
+            {% endif %}
+            <p class="text-xs text-gray-500 mt-1">Votre email servira d'identifiant pour vous connecter</p>
+        </div>
+        
+        <!-- 2. MOTS DE PASSE -->
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="{{ form.password1.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    🔒 {{ form.password1.label }} *
+                </label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.password1.errors }}</div>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ form.password2.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                    🔒 {{ form.password2.label }} *
+                </label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- 3. NOM COMPLET -->
         <div class="mb-4">
             <label for="{{ form.nom_complet.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                {{ form.nom_complet.label }} *
+                👤 Votre nom complet *
             </label>
             {{ form.nom_complet }}
             {% if form.nom_complet.errors %}
@@ -31,70 +76,89 @@
             {% endif %}
         </div>
         
-        <!-- Rôles (checkbox multiples) -->
+        <!-- 4. RÔLES (types de membre) -->
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2">
-                {{ form.type_roles.label }} *
+                ⚡ Vous êtes *
             </label>
-            <div class="space-x-4">
-                {{ form.type_roles }}
-            </div>
-            {% if form.type_roles.errors %}
-                <div class="text-red-500 text-sm mt-1">{{ form.type_roles.errors }}</div>
-            {% endif %}
-            <p class="text-gray-500 text-sm mt-1">{{ form.type_roles.help_text }}</p>
-        </div>
-        
-        <!-- Champs pour les jumeaux -->
-        <div id="jumeaux-fields" class="border-l-4 border-orange-300 pl-4 mb-4 hidden">
-            <h3 class="font-bold text-orange-700 mb-2">Informations jumeaux/jumelles/triplés</h3>
-            <div class="mb-3">
-                <label for="{{ form.noms_jumeaux_lies.id_for_label }}" class="block text-gray-700 mb-1">
-                    {{ form.noms_jumeaux_lies.label }}
+            <div class="flex flex-wrap gap-4">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" name="type_roles" value="parent" id="role_parent">
+                    <span class="text-gray-700">Parent de jumeaux/jumelles</span>
                 </label>
-                {{ form.noms_jumeaux_lies }}
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" name="type_roles" value="jumeau" id="role_jumeau">
+                    <span class="text-gray-700">Jumeau</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" name="type_roles" value="jumelle" id="role_jumelle">
+                    <span class="text-gray-700">Jumelle</span>
+                </label>
             </div>
+            <p class="text-sm text-gray-500 mt-1">Vous pouvez cocher plusieurs cases (ex: parent ET jumeau)</p>
         </div>
         
-        <!-- Champs pour les parents -->
-        <div id="parents-fields" class="border-l-4 border-green-300 pl-4 mb-4 hidden">
-            <h3 class="font-bold text-green-700 mb-2">Informations parents</h3>
-            
-            <div class="grid md:grid-cols-2 gap-3 mb-3">
+        <!-- 5. BLOC IDENTITÉ DU PARENT (affiché si "parent" est coché) -->
+        <div id="parent-identity-fields" class="border-l-4 border-green-300 pl-4 mb-4 hidden">
+            <h3 class="font-bold text-green-700 mb-3">👨‍👩‍👧 Votre identité (en tant que parent)</h3>
+            <div class="grid md:grid-cols-2 gap-3">
                 <div>
                     <label for="{{ form.nom_papa.id_for_label }}" class="block text-gray-700 mb-1">
-                        {{ form.nom_papa.label }}
+                        👨 Nom du père
                     </label>
                     {{ form.nom_papa }}
                 </div>
                 <div>
                     <label for="{{ form.nom_maman.id_for_label }}" class="block text-gray-700 mb-1">
-                        {{ form.nom_maman.label }}
+                        👩 Nom de la mère
                     </label>
                     {{ form.nom_maman }}
                 </div>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-3">
+            <div class="grid md:grid-cols-2 gap-3 mt-3">
                 <div>
                     <label for="{{ form.etat_civil.id_for_label }}" class="block text-gray-700 mb-1">
-                        {{ form.etat_civil.label }}
+                        💍 État civil
                     </label>
                     {{ form.etat_civil }}
                 </div>
                 <div>
                     <label for="{{ form.statut_pro.id_for_label }}" class="block text-gray-700 mb-1">
-                        {{ form.statut_pro.label }}
+                        💼 Statut professionnel
                     </label>
                     {{ form.statut_pro }}
                 </div>
             </div>
         </div>
         
-        <!-- Adresse -->
+        <!-- 6. BLOC ENFANTS JUMEAUX (affiché si "parent" est coché) -->
+        <div id="enfants-jumeaux-fields" class="border-l-4 border-teal-300 pl-4 mb-4 hidden">
+            <h3 class="font-bold text-teal-700 mb-2">👶👧 Noms de vos enfants jumeaux/jumelles</h3>
+            <p class="text-sm text-gray-500 mb-2">Indiquez les noms de vos enfants jumeaux, jumelles ou triplés</p>
+            <div>
+                <textarea name="noms_enfants_jumeaux" id="noms_enfants_jumeaux" rows="2" 
+                          class="w-full border rounded px-3 py-2" 
+                          placeholder="Ex: Grace + Kevin, ou Marie, Jeanne, Paul"></textarea>
+            </div>
+        </div>
+        
+        <!-- 7. BLOC FRÈRES/SŒURS JUMEAUX (affiché si "jumeau" ou "jumelle" est coché) -->
+        <div id="freres-soeurs-fields" class="border-l-4 border-orange-300 pl-4 mb-4 hidden">
+            <h3 class="font-bold text-orange-700 mb-2">👯‍♂️ Noms de vos frères/sœurs jumeaux/jumelles</h3>
+            <p class="text-sm text-gray-500 mb-2">Indiquez le(s) nom(s) de votre/vos jumeau(x), jumelle(s), triplé(s)</p>
+            <div>
+                <label for="{{ form.noms_jumeaux_lies.id_for_label }}" class="block text-gray-700 mb-1">
+                    Noms liés
+                </label>
+                {{ form.noms_jumeaux_lies }}
+                <p class="text-xs text-gray-400 mt-1">Exemple: Jean, Marie, Paul (séparés par des virgules)</p>
+            </div>
+        </div>
+        
+        <!-- 8. ADRESSE -->
         <div class="mb-4">
             <label for="{{ form.adresse.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                {{ form.adresse.label }} *
+                📍 {{ form.adresse.label }} *
             </label>
             {{ form.adresse }}
             {% if form.adresse.errors %}
@@ -102,11 +166,11 @@
             {% endif %}
         </div>
         
-        <!-- Pays et Ville -->
+        <!-- 9. PAYS ET VILLE -->
         <div class="grid md:grid-cols-2 gap-4 mb-4">
             <div>
                 <label for="{{ form.pays.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                    {{ form.pays.label }} *
+                    🌍 {{ form.pays.label }} *
                 </label>
                 {{ form.pays }}
                 {% if form.pays.errors %}
@@ -115,96 +179,85 @@
             </div>
             <div>
                 <label for="{{ form.ville.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                    {{ form.ville.label }}
+                    🏙️ {{ form.ville.label }}
                 </label>
                 {{ form.ville }}
                 {% if form.ville.errors %}
                     <div class="text-red-500 text-sm mt-1">{{ form.ville.errors }}</div>
                 {% endif %}
-                <p class="text-gray-500 text-sm mt-1">Ex: Goma, Bukavu, Bujumbura, Kigali</p>
+                <p class="text-xs text-gray-400 mt-1">Ex: Goma, Bukavu, Bujumbura, Kigali</p>
             </div>
         </div>
         
-        <!-- Téléphone et Email -->
-        <div class="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label for="{{ form.telephone.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                    {{ form.telephone.label }} *
-                </label>
-                {{ form.telephone }}
-                {% if form.telephone.errors %}
-                    <div class="text-red-500 text-sm mt-1">{{ form.telephone.errors }}</div>
-                {% endif %}
-            </div>
-            <div>
-                <label for="{{ form.email.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                    {{ form.email.label }} *
-                </label>
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="text-red-500 text-sm mt-1">{{ form.email.errors }}</div>
-                {% endif %}
-            </div>
+        <!-- 10. TÉLÉPHONE -->
+        <div class="mb-4">
+            <label for="{{ form.telephone.id_for_label }}" class="block text-gray-700 font-bold mb-2">
+                📞 {{ form.telephone.label }} *
+            </label>
+            {{ form.telephone }}
+            {% if form.telephone.errors %}
+                <div class="text-red-500 text-sm mt-1">{{ form.telephone.errors }}</div>
+            {% endif %}
         </div>
         
-        <!-- Photo -->
+        <!-- 11. PHOTO -->
         <div class="mb-4">
             <label for="{{ form.photo.id_for_label }}" class="block text-gray-700 font-bold mb-2">
-                {{ form.photo.label }}
+                🖼️ {{ form.photo.label }}
             </label>
             {{ form.photo }}
             {% if form.photo.errors %}
                 <div class="text-red-500 text-sm mt-1">{{ form.photo.errors }}</div>
             {% endif %}
-            <p class="text-gray-500 text-sm mt-1">Formats acceptés : JPG, PNG (max 2Mo)</p>
-            <!-- Aperçu de la photo -->
             <div id="photo-preview" class="mt-2 hidden">
-                <img id="preview-img" class="h-32 w-32 object-cover rounded" alt="Aperçu">
+                <img id="preview-img" class="h-32 w-32 object-cover rounded border">
             </div>
+            <p class="text-xs text-gray-400 mt-1">Formats acceptés : JPG, PNG (max 2Mo)</p>
         </div>
         
-        <!-- Bouton de soumission -->
-        <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2 rounded w-full md:w-auto">
-            S'inscrire
+        <!-- BOUTON DE SOUMISSION -->
+        <button type="submit" class="w-full md:w-auto bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded transition">
+            ✅ S'inscrire
         </button>
     </form>
 </div>
 
-<!-- Script pour les champs conditionnels et aperçu photo -->
 <script>
-    // Gestion des champs conditionnels (parents / jumeaux)
-    const roleCheckboxes = document.querySelectorAll('input[name="type_roles"]');
-    const parentFields = document.getElementById('parents-fields');
-    const jumeauxFields = document.getElementById('jumeaux-fields');
+    // Gestion des champs conditionnels
+    const roleParent = document.getElementById('role_parent');
+    const roleJumeau = document.getElementById('role_jumeau');
+    const roleJumelle = document.getElementById('role_jumelle');
+    
+    const parentIdentityFields = document.getElementById('parent-identity-fields');
+    const enfantsJumeauxFields = document.getElementById('enfants-jumeaux-fields');
+    const freresSoeursFields = document.getElementById('freres-soeurs-fields');
     
     function toggleFields() {
-        let hasParent = false;
-        let hasJumeau = false;
+        const isParent = roleParent ? roleParent.checked : false;
+        const isJumeau = (roleJumeau ? roleJumeau.checked : false) || (roleJumelle ? roleJumelle.checked : false);
         
-        roleCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                if (checkbox.value === 'parent') hasParent = true;
-                if (checkbox.value === 'jumeau' || checkbox.value === 'jumelle') hasJumeau = true;
-            }
-        });
-        
-        if (hasParent) {
-            parentFields.classList.remove('hidden');
+        // Parent → afficher identité parent + champs enfants jumeaux
+        if (isParent) {
+            parentIdentityFields.classList.remove('hidden');
+            enfantsJumeauxFields.classList.remove('hidden');
         } else {
-            parentFields.classList.add('hidden');
+            parentIdentityFields.classList.add('hidden');
+            enfantsJumeauxFields.classList.add('hidden');
         }
         
-        if (hasJumeau) {
-            jumeauxFields.classList.remove('hidden');
+        // Jumeau/Jumelle → afficher champs frères/sœurs jumeaux
+        if (isJumeau) {
+            freresSoeursFields.classList.remove('hidden');
         } else {
-            jumeauxFields.classList.add('hidden');
+            freresSoeursFields.classList.add('hidden');
         }
     }
     
-    roleCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', toggleFields);
-    });
+    if (roleParent) roleParent.addEventListener('change', toggleFields);
+    if (roleJumeau) roleJumeau.addEventListener('change', toggleFields);
+    if (roleJumelle) roleJumelle.addEventListener('change', toggleFields);
     
+    // Appel initial
     toggleFields();
     
     // Aperçu de la photo
@@ -212,19 +265,22 @@
     const photoPreview = document.getElementById('photo-preview');
     const previewImg = document.getElementById('preview-img');
     
-    photoInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                photoPreview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            photoPreview.classList.add('hidden');
-        }
-    });
+    if (photoInput) {
+        photoInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    photoPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                photoPreview.classList.add('hidden');
+                previewImg.src = '';
+            }
+        });
+    }
 </script>
 
 {% endblock %}

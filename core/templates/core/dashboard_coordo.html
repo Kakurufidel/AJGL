@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard Coordinateur{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-2xl font-bold text-green-800 mb-6">Dashboard Coordinateur</h1>
+    
+    <!-- Statistiques -->
+    <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-blue-100 p-4 rounded">
+            <h3 class="font-bold">Cotisations en attente</h3>
+            <p class="text-2xl">{{ cotisations_attente }}</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded">
+            <h3 class="font-bold">Total cotisations validées</h3>
+            <p class="text-2xl">{{ total_validees }}</p>
+        </div>
+        <div class="bg-orange-100 p-4 rounded">
+            <h3 class="font-bold">Membres actifs</h3>
+            <p class="text-2xl">{{ membres_actifs }}</p>
+        </div>
+    </div>
+    
+    <!-- Actions -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <a href="{% url 'admin:core_cotisation_changelist' %}" class="bg-green-600 text-white p-4 rounded text-center hover:bg-green-700">
+            📋 Valider les cotisations
+        </a>
+        <a href="{% url 'admin:core_evenement_add' %}" class="bg-green-600 text-white p-4 rounded text-center hover:bg-green-700">
+            📅 Ajouter un événement
+        </a>
+        <a href="{% url 'admin:core_actualite_add' %}" class="bg-green-600 text-white p-4 rounded text-center hover:bg-green-700">
+            📝 Publier une actualité
+        </a>
+        <a href="{% url 'admin:core_user_changelist' %}" class="bg-orange-600 text-white p-4 rounded text-center hover:bg-orange-700">
+            👥 Gérer les membres
+        </a>
+    </div>
+    
+    <!-- Dernières cotisations en attente -->
+    <h2 class="text-xl font-bold mb-4">Cotisations en attente</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full border">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 text-left">Membre</th>
+                    <th class="p-2 text-left">Type</th>
+                    <th class="p-2 text-left">Montant</th>
+                    <th class="p-2 text-left">Date</th>
+                    <th class="p-2 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cotisation in cotisations_attente_list %}
+                <tr class="border-t">
+                    <td class="p-2">{{ cotisation.membre.nom_complet }}</td>
+                    <td class="p-2">{{ cotisation.get_type_cotisation_display }}</td>
+                    <td class="p-2">{{ cotisation.montant }}€</td>
+                    <td class="p-2">{{ cotisation.date_soumission|date:"d/m/Y" }}</td>
+                    <td class="p-2">
+                        <a href="{% url 'admin:core_cotisation_change' cotisation.id %}" class="text-blue-600">Voir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

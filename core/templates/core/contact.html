@@ -1,0 +1,147 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-3 sm:px-4">
+    
+    <!-- En-tête -->
+    <div class="text-center mb-8 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-4">Contactez-nous</h1>
+        <div class="w-20 h-1 bg-orange-500 mx-auto"></div>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+        Nous sommes à votre écoute pour toute question ou suggestion
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- Carte gauche : Informations -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold text-green-800 mb-4">📋 Nos coordonnées</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <span class="text-orange-500 text-xl mr-3">📍</span>
+                    <div>
+                        <p class="font-semibold">Adresse</p>
+                        <p class="text-gray-600">Goma, Nord-Kivu, République Démocratique du Congo</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <span class="text-orange-500 text-xl mr-3">📞</span>
+                    <div>
+                        <p class="font-semibold">Téléphone</p>
+                        <p class="text-gray-600">+243 995 584 501</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <span class="text-orange-500 text-xl mr-3">📧</span>
+                    <div>
+                        <p class="font-semibold">Email</p>
+                        <p class="text-gray-600">kakurukalinda2@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <span class="text-orange-500 text-xl mr-3">💬</span>
+                    <div>
+                        <p class="font-semibold">WhatsApp</p>
+                        <p class="text-gray-600">+243 995 584 501</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-6">
+            
+            <h2 class="text-xl font-bold text-green-800 mb-4">⏰ Horaires</h2>
+            <div class="space-y-2 text-gray-600">
+                <div class="flex justify-between">
+                    <span>Lundi - Vendredi</span>
+                    <span>09h00 - 17h00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Samedi</span>
+                    <span>09h00 - 13h00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Dimanche</span>
+                    <span>Fermé</span>
+                </div>
+            </div>
+            
+            <hr class="my-6">
+            
+            <h2 class="text-xl font-bold text-green-800 mb-4">🌍 Nos réseaux</h2>
+            <div class="flex space-x-4">
+                <a href="https://wa.me/243995584501" target="_blank" class="bg-green-500 text-white p-3 rounded-full hover:bg-green-600 transition">
+                    💬
+                </a>
+                <a href="#" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition">
+                    📘
+                </a>
+                <a href="#" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700 transition">
+                    📷
+                </a>
+            </div>
+        </div>
+
+        <!-- Carte droite : Formulaire de contact -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold text-green-800 mb-4">✉️ Nous écrire</h2>
+            
+            <form method="post" action="#">
+                {% csrf_token %}
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2 font-semibold">Nom complet</label>
+                    <input type="text" name="nom" required 
+                        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:border-orange-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2 font-semibold">Email</label>
+                    <input type="email" name="email" required 
+                        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:border-orange-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2 font-semibold">Téléphone (optionnel)</label>
+                    <input type="tel" name="telephone" 
+                        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:border-orange-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2 font-semibold">Message</label>
+                    <textarea name="message" rows="4" required
+                        class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:border-orange-500"></textarea>
+                </div>
+                
+                <button type="submit" 
+                    class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg transition">
+                    📩 Envoyer le message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Carte OpenStreetMap -->
+    <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="h-64">
+            <iframe 
+                src="https://www.openstreetmap.org/export/embed.html?bbox=29.2,-1.7,29.3,-1.6&layer=mapnik&marker=-1.65,29.25" 
+                class="w-full h-full" 
+                frameborder="0" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="p-4 text-center text-gray-500 text-sm">
+            📍 Goma, Nord-Kivu, République Démocratique du Congo
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,141 +1,266 @@
 {% extends 'core/base.html' %}
+{% load static %}
+
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
 
-<!-- SLIDER / CARROUSEL -->
-<div class="relative w-full overflow-hidden rounded-lg mb-8">
+<!-- SLIDER PLEINE LARGEUR -->
+<div class="relative w-full overflow-x-hidden" style="height: 70vh; min-height: 400px;">
     
-    <!-- Slide 1 (active par défaut) -->
-    <div class="slide w-full">
-        <!-- IMAGE : remplacer le placeholder par votre image -->
-        <!-- <img src="/media/slider/slide1.jpg" alt="AJ-GL" class="w-full h-96 object-cover"> -->
-        <div class="bg-gradient-to-r from-green-700 to-green-500 text-white p-12 text-center h-96 flex flex-col justify-center">
-            <h2 class="text-4xl font-bold mb-4">AJ-GL Asbl</h2>
-            <p class="text-xl mb-6">Ensemble pour les jumeaux des Grands Lacs</p>
-            <a href="{% url 'adhesion' %}" class="bg-orange-500 hover:bg-orange-600 px-6 py-2 rounded inline-block">Rejoindre</a>
+    <!-- Slide 1 -->
+    <div class="slide absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out opacity-0 z-0">
+        <img src="/media/slider/silder04.jpg" alt="AJ-GL Asbl" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">AJ-GL Asbl</h2>
+                <p class="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 drop-shadow">Ensemble pour les jumeaux des Grands Lacs</p>
+                <a href="{% url 'adhesion' %}" class="inline-block bg-orange-500 hover:bg-orange-600 px-4 sm:px-6 py-2 rounded transition text-sm sm:text-base">
+                    Rejoindre
+                </a>
+            </div>
         </div>
     </div>
     
     <!-- Slide 2 -->
-    <!-- 
-    <div class="slide w-full">
-        <img src="/media/slider/slide2.jpg" alt="Formation" class="w-full h-96 object-cover">
-        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="text-center text-white">
-                <h2 class="text-4xl font-bold mb-4">Formations gratuites</h2>
-                <p class="text-xl mb-6">Arts et métiers pour les jumeaux</p>
-                <a href="#" class="bg-orange-500 hover:bg-orange-600 px-6 py-2 rounded inline-block">En savoir plus</a>
+    <div class="slide absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out opacity-0 z-0">
+        <img src="/media/slider/silder05.jpg" alt="Formations" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">Formations gratuites</h2>
+                <p class="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 drop-shadow">Arts et métiers pour les jumeaux</p>
+                <a href="{% url 'nos-actions' %}" class="inline-block bg-orange-500 hover:bg-orange-600 px-4 sm:px-6 py-2 rounded transition text-sm sm:text-base">
+                    En savoir plus
+                </a>
             </div>
         </div>
     </div>
-    -->
     
     <!-- Slide 3 -->
-    <!-- 
-    <div class="slide w-full">
-        <img src="/media/slider/slide3.jpg" alt="Assistance" class="w-full h-96 object-cover">
-        ...
+    <div class="slide absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out opacity-0 z-0">
+        <img src="/media/slider/slider.jpg" alt="Assistance" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">Assistance sociale</h2>
+                <p class="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 drop-shadow">Aide aux familles des jumeaux</p>
+                <a href="{% url 'realisations' %}" class="inline-block bg-orange-500 hover:bg-orange-600 px-4 sm:px-6 py-2 rounded transition text-sm sm:text-base">
+                    Voir nos actions
+                </a>
+            </div>
+        </div>
     </div>
-    -->
     
-    <!-- Indicateurs / points -->
-    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-        <button class="dot w-3 h-3 rounded-full bg-white" data-slide="0"></button>
-        <button class="dot w-3 h-3 rounded-full bg-gray-400" data-slide="1"></button>
-        <button class="dot w-3 h-3 rounded-full bg-gray-400" data-slide="2"></button>
+    <!-- Slide 4 -->
+    <div class="slide absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out opacity-0 z-0">
+        <img src="/media/slider/slider02.jpg" alt="Événements" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">Événements</h2>
+                <p class="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 drop-shadow">Matchs, expositions, célébrations</p>
+                <a href="{% url 'realisations' %}" class="inline-block bg-orange-500 hover:bg-orange-600 px-4 sm:px-6 py-2 rounded transition text-sm sm:text-base">
+                    Voir nos réalisations
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Boutons précédent / suivant -->
+    <button id="prev-slide" class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-1 sm:p-2 rounded-full transition z-20">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    <button id="next-slide" class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-1 sm:p-2 rounded-full transition z-20">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </button>
+    
+    <!-- Indicateurs (dots) -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-1 sm:space-x-2 z-20">
+        <button class="dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white bg-opacity-50 transition-all" data-slide="0"></button>
+        <button class="dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white bg-opacity-50 transition-all" data-slide="1"></button>
+        <button class="dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white bg-opacity-50 transition-all" data-slide="2"></button>
+        <button class="dot w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white bg-opacity-50 transition-all" data-slide="3"></button>
     </div>
 </div>
 
+<!-- Message personnalisé pour utilisateur connecté -->
+<div class="max-w-7xl mx-auto px-3 sm:px-4">
+    {% if user.is_authenticated %}
+    <div class="bg-green-100 border-l-4 border-green-700 p-3 sm:p-4 mb-4 sm:mb-6 rounded mt-4 sm:mt-6">
+        <p class="text-green-800 text-sm sm:text-base">
+            Bonjour <strong>{{ user.nom_complet }}</strong> ! 👋
+            {% if user.is_superuser or user.groups.all %}
+                <span class="text-xs ml-2 bg-green-700 text-white px-2 py-0.5 rounded">Coordinateur</span>
+            {% endif %}
+        </p>
+        <p class="text-green-700 text-xs sm:text-sm mt-1">
+            Consultez <a href="{% url 'mes_cotisations' %}" class="underline">vos cotisations</a> ou 
+            <a href="{% url 'soumettre_cotisation' %}" class="underline">effectuez un paiement</a>.
+        </p>
+    </div>
+    {% else %}
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded mt-4 sm:mt-6">
+        <p class="text-blue-800 text-sm sm:text-base">
+            👋 Bienvenue sur le site de l'AJ-GL Asbl !
+        </p>
+        <p class="text-blue-700 text-xs sm:text-sm mt-1">
+            <a href="{% url 'connexion' %}" class="underline">Connectez-vous</a> pour accéder à plus de contenu.
+        </p>
+    </div>
+    {% endif %}
+</div>
+
 <!-- SECTION BIENVENUE -->
-<div class="text-center mb-12">
-    <h1 class="text-3xl font-bold text-green-800 mb-4">Bienvenue à l'AJ-GL Asbl</h1>
-    <p class="text-gray-700 max-w-2xl mx-auto">
+<div class="max-w-7xl mx-auto px-3 sm:px-4 text-center mb-8 sm:mb-12">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 mb-2 sm:mb-4">Bienvenue à l'AJ-GL Asbl</h1>
+    <p class="text-gray-700 text-sm sm:text-base max-w-2xl mx-auto">
         L'Association des Jumeaux des pays des Grands Lacs (RDC, Rwanda, Burundi) accompagne 
         les jumeaux, jumelles, triplés et leurs familles depuis 2021.
     </p>
 </div>
 
 <!-- TROIS CARTES -->
-<div class="grid md:grid-cols-3 gap-6 mb-12">
-    
-    <!-- Carte 1 -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- <img src="/media/images/formation.jpg" alt="Formation" class="w-full h-48 object-cover"> -->
-        <div class="p-6">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Formations</h3>
-            <p class="text-gray-600 mb-4">Arts plastiques, décoration, coupe-couture, photo et vidéo</p>
-            <a href="{% url 'nos-actions' %}" class="text-orange-500 hover:underline">En savoir plus →</a>
+<div class="max-w-7xl mx-auto px-3 sm:px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+            <img src="/media/images/action.jpg" alt="Formation" class="w-full h-40 sm:h-48 object-cover">
+            <div class="p-4 sm:p-6">
+                <h3 class="text-lg sm:text-xl font-bold text-green-800 mb-1 sm:mb-2">Formations</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">Arts plastiques, décoration, coupe-couture, photo et vidéo</p>
+                <a href="{% url 'nos-actions' %}" class="text-orange-500 hover:underline font-semibold text-sm sm:text-base">En savoir plus →</a>
+            </div>
         </div>
-    </div>
-    
-    <!-- Carte 2 -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- <img src="/media/images/assistance.jpg" alt="Assistance" class="w-full h-48 object-cover"> -->
-        <div class="p-6">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Assistance sociale</h3>
-            <p class="text-gray-600 mb-4">Aide aux deuils, mariages, naissances multiples, incendies</p>
-            <a href="{% url 'nos-actions' %}" class="text-orange-500 hover:underline">En savoir plus →</a>
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+            <img src="/media/images/activite.jpg" alt="Assistance" class="w-full h-40 sm:h-48 object-cover">
+            <div class="p-4 sm:p-6">
+                <h3 class="text-lg sm:text-xl font-bold text-green-800 mb-1 sm:mb-2">Assistance sociale</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">Aide aux deuils, mariages, naissances multiples, incendies</p>
+                <a href="{% url 'nos-actions' %}" class="text-orange-500 hover:underline font-semibold text-sm sm:text-base">En savoir plus →</a>
+            </div>
         </div>
-    </div>
-    
-    <!-- Carte 3 -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- <img src="/media/images/evenement.jpg" alt="Événements" class="w-full h-48 object-cover"> -->
-        <div class="p-6">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Événements</h3>
-            <p class="text-gray-600 mb-4">Matchs de football, expositions, célébrations</p>
-            <a href="{% url 'realisations' %}" class="text-orange-500 hover:underline">Voir les réalisations →</a>
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+            <img src="/media/images/blanche.jpg" alt="Événements" class="w-full h-40 sm:h-48 object-cover">
+            <div class="p-4 sm:p-6">
+                <h3 class="text-lg sm:text-xl font-bold text-green-800 mb-1 sm:mb-2">Événements</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">Matchs de football, expositions, célébrations</p>
+                <a href="{% url 'realisations' %}" class="text-orange-500 hover:underline font-semibold text-sm sm:text-base">Voir les réalisations →</a>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- SECTION CHIFFRES CLÉS -->
-<div class="bg-green-800 text-white rounded-lg p-8 text-center mb-8">
-    <h2 class="text-2xl font-bold mb-6">AJ-GL Asbl en chiffres</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-        <div>
-            <div class="text-4xl font-bold">1000+</div>
-            <div>Familles assistées</div>
-        </div>
-        <div>
-            <div class="text-4xl font-bold">50+</div>
-            <div>Jumeaux au 1er anniversaire</div>
-        </div>
-        <div>
-            <div class="text-4xl font-bold">3</div>
-            <div>Pays d'action</div>
+<div class="bg-green-800 text-white px-4 py-8 sm:py-12">
+    <div class="max-w-7xl mx-auto text-center">
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">AJ-GL Asbl en chiffres</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+            <div class="p-3 sm:p-4">
+                <div class="text-3xl sm:text-4xl md:text-5xl font-bold">1000+</div>
+                <div class="text-sm sm:text-base mt-1 sm:mt-2">Familles assistées</div>
+            </div>
+            <div class="p-3 sm:p-4">
+                <div class="text-3xl sm:text-4xl md:text-5xl font-bold">50+</div>
+                <div class="text-sm sm:text-base mt-1 sm:mt-2">Jumeaux au 1er anniversaire</div>
+            </div>
+            <div class="p-3 sm:p-4">
+                <div class="text-3xl sm:text-4xl md:text-5xl font-bold">3</div>
+                <div class="text-sm sm:text-base mt-1 sm:mt-2">Pays d'action</div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- SCRIPT SIMPLE POUR LE SLIDER (si plusieurs slides) -->
+<!-- SECTION APPEL À ACTION -->
+<div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-8 sm:py-12 mt-8 sm:mt-12">
+    <div class="max-w-7xl mx-auto text-center text-white">
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">Prêt à nous rejoindre ?</h2>
+        <p class="text-sm sm:text-base mb-4 sm:mb-6">Devenez membre de l'AJ-GL Asbl et participez à nos actions</p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <a href="{% url 'adhesion' %}" class="inline-block bg-white text-orange-600 font-bold px-5 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-gray-100 transition text-sm sm:text-base">
+                📝 S'inscrire maintenant
+            </a>
+            <a href="{% url 'contact' %}" class="inline-block border-2 border-white text-white font-bold px-5 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-white hover:text-orange-600 transition text-sm sm:text-base">
+                📞 Nous contacter
+            </a>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Version simple : décommenter si vous activez plusieurs slides
-    /*
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
+    let autoSlideInterval;
     
     function showSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        currentSlide = index;
+        
         slides.forEach((slide, i) => {
-            slide.style.display = i === index ? 'block' : 'none';
+            if (i === index) {
+                slide.classList.remove('opacity-0');
+                slide.classList.add('opacity-100');
+                slide.style.zIndex = 10;
+            } else {
+                slide.classList.remove('opacity-100');
+                slide.classList.add('opacity-0');
+                slide.style.zIndex = 0;
+            }
         });
+        
         dots.forEach((dot, i) => {
-            dot.classList.toggle('bg-white', i === index);
-            dot.classList.toggle('bg-gray-400', i !== index);
+            if (i === index) {
+                dot.classList.remove('bg-opacity-50');
+                dot.classList.add('bg-white');
+            } else {
+                dot.classList.remove('bg-white');
+                dot.classList.add('bg-opacity-50');
+            }
         });
     }
     
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+        resetAutoSlide();
+    }
+    
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+        resetAutoSlide();
+    }
+    
+    function startAutoSlide() {
+        if (autoSlideInterval) clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+            nextSlide();
+        }, 5000);
+    }
+    
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+    
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            currentSlide = index;
-            showSlide(currentSlide);
+            showSlide(index);
+            resetAutoSlide();
         });
     });
     
     showSlide(0);
-    */
+    startAutoSlide();
 </script>
 
 {% endblock %}
