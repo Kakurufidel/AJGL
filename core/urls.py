@@ -16,3 +16,19 @@ urlpatterns = [
     path('profil/', views.MonProfilView.as_view(), name='profil'),
     path('soumettre-cotisation/', views.SoumettreCotisationView.as_view(), name='soumettre_cotisation'),
 ]
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.core.management import call_command
+
+@csrf_exempt
+def migrate_view(request):
+    if request.GET.get('key') == 'MAGIC_KEY_123':
+        call_command('migrate', interactive=False)
+        return JsonResponse({'status': 'migrations done'})
+    return JsonResponse({'error': 'unauthorized'}, status=401)
+
+urlpatterns += [
+    path('secret-migrate/', migrate_view, name='migrate'),
+]
