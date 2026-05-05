@@ -1,34 +1,36 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
+    # Pages publiques
     path('', views.AccueilView.as_view(), name='accueil'),
     path('a-propos/', views.AProposView.as_view(), name='a-propos'),
     path('nos-actions/', views.NosActionsView.as_view(), name='nos-actions'),
     path('realisations/', views.RealisationsView.as_view(), name='realisations'),
-    path('adhesion/', views.AdhesionView.as_view(), name='adhesion'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    
+    # Authentification
     path('connexion/', views.ConnexionView.as_view(), name='connexion'),
     path('deconnexion/', views.DeconnexionView.as_view(), name='deconnexion'),
-    path('tableau-de-bord/', views.TableauBordView.as_view(), name='tableau-bord'),
-    path('mes-cotisations/', views.MesCotisationsView.as_view(), name='mes_cotisations'),
+    
+    # Adhésion (inscription)
+    path('adhesion/', views.AdhesionView.as_view(), name='adhesion'),
+    
+    # Profil utilisateur (connecté)
     path('profil/', views.MonProfilView.as_view(), name='profil'),
-    path('soumettre-cotisation/', views.SoumettreCotisationView.as_view(), name='soumettre_cotisation'),
-]
-
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from django.core.management import call_command
-
-@csrf_exempt
-def migrate_view(request):
-    if request.GET.get('key') == 'MAGIC_KEY_123':
-        call_command('migrate', interactive=False)
-        return JsonResponse({'status': 'migrations done'})
-    return JsonResponse({'error': 'unauthorized'}, status=401)
-
-urlpatterns += [
-    path('secret-migrate/', migrate_view, name='migrate'),
+    
+    # Contributions (paiements des membres)
+    path('mes-contributions/', views.MesContributionsView.as_view(), name='mes_contributions'),
+    path('soumettre-contribution/', views.SoumettreContributionView.as_view(), name='soumettre_contribution'),
+    
+    # Cotisations (gestion admin/coordinateur)
+    path('cotisations/', views.ListeCotisationsView.as_view(), name='liste_cotisations'),
+    path('cotisations/creer/', views.CotisationCreateView.as_view(), name='creer_cotisation'),
+    path('cotisations/<int:pk>/', views.CotisationDetailView.as_view(), name='cotisation_detail'),
+    
+    # Validation des contributions (coordinateur)
+    path('valider-contribution/<int:pk>/', views.ValiderContributionView.as_view(), name='valider_contribution'),
+    
+    # Dashboard coordinateur
+    path('dashboard-coordo/', views.DashboardCoordoView.as_view(), name='dashboard_coordo'),
 ]
