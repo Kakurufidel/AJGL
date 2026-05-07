@@ -38,9 +38,14 @@ class CustomUserManager(BaseUserManager):
 # ==========================================
 
 class User(AbstractUser):
-    username = None  # Désactiver le champ username
+    
+    username = None
     email = models.EmailField(unique=True, db_index=True)
-
+    ROLES = [
+        ('parent', 'Parent'),
+        ('jumeau', 'Jumeau'),
+        ('jumelle', 'Jumelle'),
+    ]
     # Informations personnelles
     nom_complet = models.CharField(max_length=100, verbose_name="Nom complet")
     telephone = models.CharField(max_length=20, verbose_name="Téléphone")
@@ -51,6 +56,19 @@ class User(AbstractUser):
     ville = models.CharField(max_length=100, blank=True, null=True, verbose_name="Ville")
     adresse = models.TextField(blank=True, null=True, verbose_name="Adresse complète")
 
+    # Rôles et liens familiaux
+    type_roles = models.CharField(max_length=50, blank=True, default='', verbose_name="Rôles")
+    nom_jumeau_lie = models.CharField(max_length=100, blank=True, null=True, verbose_name="Nom de mon jumeau/ma jumelle")
+    noms_enfants_jumeaux = models.TextField(blank=True, null=True, verbose_name="Noms de mes enfants jumeaux")
+
+    # Genre et âge
+    SEXE_CHOICES = [
+        ('M', 'Masculin'),
+        ('F', 'Féminin'),
+    ]
+    genre = models.CharField(max_length=1, choices=SEXE_CHOICES, blank=True, null=True, verbose_name="Genre")
+    date_naissance = models.DateField(blank=True, null=True, verbose_name="Date de naissance")
+
     # Configuration Django
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nom_complet', 'telephone']
@@ -60,20 +78,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.nom_complet
 
-    # ===== Helpers pour les permissions =====
-    def is_admin(self):
-        return self.is_superuser
-
-    def is_editor(self):
-        return self.is_staff and not self.is_superuser
-
-    def is_member(self):
-        return self.is_authenticated
+    def age(self):
+        if self.date_naissance:
+            from datetime import date
+            today = date.today()
+            return today.year - self.date_naissance.year - ((today.month, today.day) < (self.date_naissance.month, self.date_naissance.day))
+        return None
 
     class Meta:
         verbose_name = "Membre"
         verbose_name_plural = "Membres"
-
 
 # ==========================================
 # EVENEMENT (EVENT)
@@ -164,6 +178,8 @@ class Cotisation(models.Model):
     )
     nom_beneficiaire = models.CharField(
         max_length=200,
+        blank=True,
+        null=True,
         verbose_name="Intitulé du compte / Nom du bénéficiaire"
     )
 
@@ -309,3 +325,111 @@ class Contribution(models.Model):
 
     def __str__(self):
         return f"{self.membre.nom_complet} - {self.montant}€ - {self.cotisation.titre}"
+
+# ==========================================
+# ACTUALITE (NEWS)
+# ==========================================
+
+class Actualite(models.Model):
+    CATEGORIE_ACTUALITE = [
+        ('annonce', 'Annonce officielle'),
+        ('evenement', 'Retour sur événement'),
+        ('temoignage', 'Témoignage'),
+        ('partenariat', 'Partenariat'),
+        ('appel', 'Appel à participation'),
+        ('autre', 'Autre'),
+    ]
+    
+    titre = models.CharField(max_length=200, verbose_name="Titre")
+    slug = models.SlugField(max_length=200, unique=True, blank=True, verbose_name="URL personnalisée")
+    contenu = models.TextField(verbose_name="Contenu")
+    extrait = models.TextField(blank=True, null=True, max_length=300, verbose_name="Extrait (résumé)")
+    categorie = models.CharField(max_length=50, choices=CATEGORIE_ACTUALITE, default='annonce', verbose_name="Catégorie")
+    
+    image_principale = models.ImageField(upload_to='actualites/', blank=True, null=True, verbose_name="Image principale")
+    
+    est_publie = models.BooleanField(default=True, verbose_name="Publié ?")
+    date_publication = models.DateTimeField(auto_now_add=True, verbose_name="Date de publication")
+    date_modification = models.DateTimeField(auto_now=True, verbose_name="Date de modification")
+    
+    evenement_lie = models.ForeignKey(
+        'Evenement', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        verbose_name="Événement lié"
+    )
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            import re
+            self.slug = re.sub(r'[^a-z0-9]+', '-', self.titre.lower()).strip('-')
+        super().save(*args, **kwargs)
+    
+    def get_extrait(self):
+        if self.extrait:
+            return self.extrait
+        if len(self.contenu) > 150:
+            return self.contenu[:150] + "..."
+        return self.contenu
+    
+    def est_recent(self):
+        from django.utils import timezone
+        from datetime import timedelta
+        return self.date_publication >= (timezone.now() - timedelta(days=7))
+    
+    def __str__(self):
+        return self.titre
+    
+    class Meta:
+        ordering = ['-date_publication']
+        verbose_name = "Actualité"
+        verbose_name_plural = "Actualités"
+
+
+# ==========================================
+# PARTENAIRE (PARTNER)
+# ==========================================
+
+class Partenaire(models.Model):
+    nom = models.CharField(max_length=100, verbose_name="Nom du partenaire")
+    logo = models.ImageField(upload_to='logos/', blank=True, null=True, verbose_name="Logo")
+    description = models.TextField(blank=True, null=True, verbose_name="Description")
+    pays = models.CharField(max_length=50, blank=True, null=True, verbose_name="Pays")
+    site_web = models.URLField(blank=True, null=True, verbose_name="Site web")
+    ordre_affichage = models.IntegerField(default=0, verbose_name="Ordre d'affichage")
+    est_actif = models.BooleanField(default=True, verbose_name="Actif")
+    date_ajout = models.DateTimeField(auto_now_add=True, verbose_name="Date d'ajout")
+    
+    def __str__(self):
+        return self.nom
+    
+    class Meta:
+        ordering = ['ordre_affichage', 'nom']
+        verbose_name = "Partenaire"
+        verbose_name_plural = "Partenaires"
+
+
+# ==========================================
+# CELLULE (NEIGHBORHOOD UNIT)
+# ==========================================
+
+class Cellule(models.Model):
+    nom = models.CharField(max_length=100, verbose_name="Nom de la cellule")
+    quartier = models.CharField(max_length=100, verbose_name="Quartier")
+    ville = models.CharField(max_length=100, verbose_name="Ville")
+    pays = models.CharField(max_length=50, verbose_name="Pays")
+    responsable = models.CharField(max_length=100, verbose_name="Nom du responsable")
+    telephone = models.CharField(max_length=20, verbose_name="Téléphone du responsable")
+    email = models.EmailField(blank=True, null=True, verbose_name="Email")
+    description = models.TextField(blank=True, null=True, verbose_name="Description")
+    est_active = models.BooleanField(default=True, verbose_name="Cellule active")
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    
+    def __str__(self):
+        return f"{self.nom} - {self.quartier}"
+    
+    class Meta:
+        ordering = ['pays', 'ville', 'quartier']
+        verbose_name = "Cellule"
+        verbose_name_plural = "Cellules"

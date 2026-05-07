@@ -6,36 +6,91 @@ from .models import User, Cotisation, Contribution, Evenement
 # ==========================================
 # FORMULAIRE D'INSCRIPTION (ADHÉSION)
 # ==========================================
-
 class UserForm(UserCreationForm):
+    type_roles = forms.MultipleChoiceField(
+        choices=[
+            ('parent', 'Parent'),
+            ('jumeau', 'Jumeau'),
+            ('jumelle', 'Jumelle'),
+        ],
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Vous êtes"
+    )
+
+    nom_jumeau_lie = forms.CharField(
+        max_length=100,
+        required=False,
+        label="Nom de mon jumeau / ma jumelle"
+    )
+
+    noms_enfants_jumeaux = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2}),
+        required=False,
+        label="Noms de mes enfants jumeaux"
+    )
+
+    genre = forms.ChoiceField(
+        choices=User.SEXE_CHOICES,
+        required=False,
+        label="Genre"
+    )
+
+    date_naissance = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label="Date de naissance"
+    )
+
     class Meta:
         model = User
         fields = [
             'email', 'nom_complet', 'telephone',
-            'pays', 'ville', 'adresse',
-            'photo'
+            'pays', 'ville', 'adresse', 'photo',
+            'type_roles', 'nom_jumeau_lie', 'noms_enfants_jumeaux',
+            'genre', 'date_naissance'
         ]
         widgets = {
-            'adresse': forms.Textarea(attrs={'rows': 3}),
+            'adresse': forms.Textarea(attrs={'rows': 2}),
             'photo': forms.FileInput(attrs={'accept': 'image/jpeg,image/png'}),
+        }
+        error_messages = {
+            'email': {
+                'unique': "Cet email est déjà utilisé par un autre membre.",
+                'invalid': "Veuillez entrer une adresse email valide.",
+            },
+            'nom_complet': {
+                'required': "Le nom complet est obligatoire.",
+            },
+            'telephone': {
+                'required': "Le numéro de téléphone est obligatoire.",
+            },
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Champs optionnels
-        self.fields['pays'].required = False
-        self.fields['ville'].required = False
-        self.fields['adresse'].required = False
-        self.fields['photo'].required = False
-
-        # Classes CSS pour Tailwind
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'w-full border rounded px-3 py-2'})
+            if not isinstance(self.fields[field].widget, forms.CheckboxSelectMultiple):
+                self.fields[field].widget.attrs.update({'class': 'w-full border rounded px-3 py-2'})
+        self.fields['noms_enfants_jumeaux'].widget.attrs.update({'rows': 2, 'class': 'w-full border rounded px-3 py-2'})
+        self.fields['photo'].widget.attrs.update({'class': 'w-full'})
 
-        self.fields['password1'].widget.attrs.update({'class': 'w-full border rounded px-3 py-2'})
-        self.fields['password2'].widget.attrs.update({'class': 'w-full border rounded px-3 py-2'})
+        # Messages d'erreur pour les mots de passe
+        self.fields['password1'].error_messages = {'required': "Veuillez entrer un mot de passe."}
+        self.fields['password2'].error_messages = {'required': "Veuillez confirmer votre mot de passe."}
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Cet email est déjà utilisé. Connectez-vous ou utilisez un autre email.")
+        return email
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Les deux mots de passe ne correspondent pas.")
+        return password2
 
 # ==========================================
 # FORMULAIRE DE CONNEXION (EMAIL)

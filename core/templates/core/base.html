@@ -15,51 +15,65 @@
     <!-- HEADER -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo -->
             <div class="text-2xl font-bold text-green-800">AJ-GL Asbl</div>
             
-            <nav class="hidden md:flex space-x-6">
-                <a href="{% url 'accueil' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-home mr-1"></i> Accueil</a>
-                <a href="{% url 'a-propos' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-info-circle mr-1"></i> À propos</a>
-                <a href="{% url 'nos-actions' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-hands-helping mr-1"></i> Nos actions</a>
-                <a href="{% url 'realisations' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-trophy mr-1"></i> Réalisations</a>
-                <a href="{% url 'adhesion' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-user-plus mr-1"></i> Adhésion</a>
-                <a href="{% url 'contact' %}" class="text-gray-700 hover:text-green-700"><i class="fas fa-envelope mr-1"></i> Contact</a>
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="{% url 'home' %}" class="text-gray-700 hover:text-green-700 transition">Accueil</a>
+                <a href="{% url 'about' %}" class="text-gray-700 hover:text-green-700 transition">À propos</a>
+                <a href="{% url 'actions' %}" class="text-gray-700 hover:text-green-700 transition">Nos actions</a>
+                <a href="{% url 'achievements' %}" class="text-gray-700 hover:text-green-700 transition">Réalisations</a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="text-gray-700 hover:text-green-700 transition">Adhésion</a>
+                {% endif %}
+                <a href="{% url 'contact' %}" class="text-gray-700 hover:text-green-700 transition">Contact</a>
             </nav>
             
+            <!-- Desktop : Connexion / Mon espace -->
             <div class="hidden md:flex items-center space-x-4">
                 {% if user.is_authenticated %}
                     <div class="relative group">
-                        <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold cursor-pointer">
-                            {{ user.nom_complet|slice:":2"|upper }}
-                        </div>
+                        <!-- Avatar avec photo ou initiales -->
+                        {% if user.photo and user.photo.url %}
+                            <img src="{{ user.photo.url }}" alt="{{ user.nom_complet }}" 
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-green-200 cursor-pointer">
+                        {% else %}
+                            <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold cursor-pointer">
+                                {{ user.nom_complet|slice:":2"|upper }}
+                            </div>
+                        {% endif %}
+                        <!-- Menu déroulant -->
                         <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl hidden group-hover:block z-50">
                             <div class="p-3 border-b">
                                 <p class="font-semibold">{{ user.nom_complet }}</p>
                                 <p class="text-sm text-gray-500">{{ user.email }}</p>
                             </div>
                             <div class="py-2">
-                                <a href="{% url 'mes_contributions' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-clipboard-list mr-2"></i> Mes contributions</a>
-                                <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-user-circle mr-2"></i> Mon profil</a>
-                                {% if user.is_superuser or user.is_staff %}
-                                    <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-chalkboard-user mr-2"></i> Administration</a>
+                                <a href="{% url 'dashboard' %}" class="block px-4 py-2 hover:bg-gray-100">Tableau de bord</a>
+                                <a href="{% url 'my_payments' %}" class="block px-4 py-2 hover:bg-gray-100">Mes contributions</a>
+                                <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-gray-100">Mon profil</a>
+                                {% if user.is_staff or user.is_superuser %}
+                                    <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-100">Administration</a>
                                 {% endif %}
                                 <hr class="my-1">
-                                <form action="{% url 'deconnexion' %}" method="post">
+                                <form action="{% url 'logout' %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
-                                        <i class="fas fa-sign-out-alt mr-2"></i> Se déconnecter
+                                        Déconnexion
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 {% else %}
-                    <a href="{% url 'connexion' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition">
-                        <i class="fas fa-key mr-1"></i> Connexion
+                    <a href="{% url 'login' %}" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">
+                        Connexion
                     </a>
                 {% endif %}
             </div>
             
+            <!-- Menu burger (mobile) -->
             <button id="menu-btn" class="block md:hidden text-gray-700">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -67,50 +81,60 @@
             </button>
         </div>
         
+        <!-- Menu Mobile -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <a href="{% url 'accueil' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-home mr-2"></i> Accueil</a>
-            <a href="{% url 'a-propos' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-info-circle mr-2"></i> À propos</a>
-            <a href="{% url 'nos-actions' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-hands-helping mr-2"></i> Nos actions</a>
-            <a href="{% url 'realisations' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-trophy mr-2"></i> Réalisations</a>
-            <a href="{% url 'adhesion' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-user-plus mr-2"></i> Adhésion</a>
-            <a href="{% url 'contact' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-envelope mr-2"></i> Contact</a>
+            <a href="{% url 'home' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Accueil</a>
+            <a href="{% url 'about' %}" class="block px-4 py-3 hover:bg-gray-50 transition">À propos</a>
+            <a href="{% url 'actions' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Nos actions</a>
+            <a href="{% url 'achievements' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Réalisations</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Adhésion</a>
+            {% endif %}
+            <a href="{% url 'contact' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Contact</a>
             
             {% if user.is_authenticated %}
                 <div class="border-t mt-2 pt-2">
                     <div class="px-4 py-2 bg-gray-50 flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
-                            {{ user.nom_complet|slice:":2"|upper }}
-                        </div>
+                        {% if user.photo and user.photo.url %}
+                            <img src="{{ user.photo.url }}" alt="{{ user.nom_complet }}" 
+                                 class="w-10 h-10 rounded-full object-cover">
+                        {% else %}
+                            <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
+                                {{ user.nom_complet|slice:":2"|upper }}
+                            </div>
+                        {% endif %}
                         <div>
                             <p class="font-semibold">{{ user.nom_complet }}</p>
                             <p class="text-sm text-gray-500">{{ user.email }}</p>
                         </div>
                     </div>
-                    <a href="{% url 'mes_contributions' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-clipboard-list mr-2"></i> Mes contributions</a>
-                    <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-user-circle mr-2"></i> Mon profil</a>
-                    {% if user.is_superuser or user.is_staff %}
-                        <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-chalkboard-user mr-2"></i> Administration</a>
+                    <a href="{% url 'dashboard' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Tableau de bord</a>
+                    <a href="{% url 'my_payments' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Mes contributions</a>
+                    <a href="{% url 'profile' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Mon profil</a>
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin:index' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Administration</a>
                     {% endif %}
-                    <form action="{% url 'deconnexion' %}" method="post">
+                    <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Se déconnecter
+                        <button type="submit" class="w-full text-left px-4 py-3 text-red-600 hover:bg-gray-50 transition">
+                            Déconnexion
                         </button>
                     </form>
                 </div>
             {% else %}
-                <a href="{% url 'connexion' %}" class="block px-4 py-2 bg-orange-500 text-white text-center m-2 rounded">
-                    <i class="fas fa-key mr-2"></i> Se connecter
+                <a href="{% url 'login' %}" class="block px-4 py-3 bg-orange-500 text-white text-center m-2 rounded-lg">
+                    Connexion
                 </a>
             {% endif %}
         </div>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main class="container mx-auto px-4 py-8">
         {% if messages %}
             {% for message in messages %}
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-4 shadow-md">
-                    <i class="fas fa-check-circle mr-2"></i> {{ message }}
+                <div class="bg-green-100 border-l-4 border-green-600 text-green-800 px-4 py-3 rounded mb-6">
+                    {{ message }}
                 </div>
             {% endfor %}
         {% endif %}
@@ -118,53 +142,34 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-900 text-white mt-12">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-orange-400"><i class="fas fa-handshake mr-2"></i> AJ-GL Asbl</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Association des Jumeaux des pays des Grands Lacs.<br>
-                        Ensemble pour les jumeaux, jumelles, triplés et leurs familles.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-orange-400"><i class="fas fa-link mr-2"></i> Liens rapides</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'accueil' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-home mr-1"></i> Accueil</a></li>
-                        <li><a href="{% url 'a-propos' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-info-circle mr-1"></i> À propos</a></li>
-                        <li><a href="{% url 'nos-actions' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-hands-helping mr-1"></i> Nos actions</a></li>
-                        <li><a href="{% url 'realisations' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-trophy mr-1"></i> Réalisations</a></li>
-                        <li><a href="{% url 'adhesion' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-user-plus mr-1"></i> Adhésion</a></li>
-                        <li><a href="{% url 'contact' %}" class="text-gray-400 hover:text-orange-400"><i class="fas fa-envelope mr-1"></i> Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4 text-orange-400"><i class="fas fa-address-card mr-2"></i> Contactez-nous</h3>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><i class="fas fa-map-marker-alt mr-2 w-5"></i> Goma, Nord-Kivu, RDC</li>
-                        <li><i class="fas fa-phone-alt mr-2 w-5"></i> +243 995 584 501</li>
-                        <li><i class="fas fa-envelope mr-2 w-5"></i> contact@ajgl.org</li>
-                        <li><i class="fab fa-whatsapp mr-2 w-5"></i> WhatsApp : +243 995 584 501</li>
-                    </ul>
-                    <div class="flex space-x-3 mt-4">
-                        <a href="https://wa.me/243995584501" target="_blank" class="bg-green-600 hover:bg-green-700 p-2 rounded-full"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" class="bg-blue-600 hover:bg-blue-700 p-2 rounded-full"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="bg-pink-600 hover:bg-pink-700 p-2 rounded-full"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-sm">
-                <p><i class="far fa-copyright mr-1"></i> 2026 AJ-GL Asbl - Tous droits réservés.</p>
-            </div>
+    <footer class="bg-gray-800 text-white mt-12 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">AJ-GL Asbl - Association des Jumeaux des pays des Grands Lacs</p>
+            <p class="mb-2">Goma, Nord-Kivu, République Démocratique du Congo</p>
+            <p>+243 995 584 501 | contact@ajgl.org</p>
         </div>
     </footer>
 
     <script>
-        document.getElementById('menu-btn').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
+        // Menu burger toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Fermer le menu en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    if (!menuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
