@@ -10,4 +10,5 @@ staticfiles/
 .env
 core\static\css\tailwind.css
 node_modules
+key
 
