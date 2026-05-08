@@ -3,173 +3,120 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>AJ-GL Asbl - {% block title %}Accueil{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body { overflow-x: hidden; width: 100%; }
+        .container { width: 100%; overflow-x: hidden; }
+        img, video, iframe { max-width: 100%; height: auto; }
+        .nav-link { white-space: nowrap; }
+        @media (max-width: 768px) { .nav-link { white-space: normal; } }
+    </style>
 </head>
-<body class="bg-gray-50 font-['Inter']">
+<body class="bg-gray-50 font-['Inter'] overflow-x-hidden">
 
-    <!-- HEADER -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="text-2xl font-bold text-green-800">AJ-GL Asbl</div>
-            
-            <!-- Menu Desktop -->
-            <nav class="hidden md:flex space-x-8">
-                <a href="{% url 'home' %}" class="text-gray-700 hover:text-green-700 transition">Accueil</a>
-                <a href="{% url 'about' %}" class="text-gray-700 hover:text-green-700 transition">À propos</a>
-                <a href="{% url 'actions' %}" class="text-gray-700 hover:text-green-700 transition">Nos actions</a>
-                <a href="{% url 'achievements' %}" class="text-gray-700 hover:text-green-700 transition">Réalisations</a>
-                {% if not user.is_authenticated %}
-                    <a href="{% url 'register' %}" class="text-gray-700 hover:text-green-700 transition">Adhésion</a>
-                {% endif %}
-                <a href="{% url 'contact' %}" class="text-gray-700 hover:text-green-700 transition">Contact</a>
-            </nav>
-            
-            <!-- Desktop : Connexion / Mon espace -->
-            <div class="hidden md:flex items-center space-x-4">
-                {% if user.is_authenticated %}
-                    <div class="relative group">
-                        <!-- Avatar avec photo ou initiales -->
-                        {% if user.photo and user.photo.url %}
-                            <img src="{{ user.photo.url }}" alt="{{ user.nom_complet }}" 
-                                 class="w-10 h-10 rounded-full object-cover border-2 border-green-200 cursor-pointer">
-                        {% else %}
-                            <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold cursor-pointer">
-                                {{ user.nom_complet|slice:":2"|upper }}
-                            </div>
-                        {% endif %}
-                        <!-- Menu déroulant -->
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl hidden group-hover:block z-50">
-                            <div class="p-3 border-b">
-                                <p class="font-semibold">{{ user.nom_complet }}</p>
-                                <p class="text-sm text-gray-500">{{ user.email }}</p>
-                            </div>
-                            <div class="py-2">
-                                <a href="{% url 'dashboard' %}" class="block px-4 py-2 hover:bg-gray-100">Tableau de bord</a>
-                                <a href="{% url 'my_payments' %}" class="block px-4 py-2 hover:bg-gray-100">Mes contributions</a>
-                                <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-gray-100">Mon profil</a>
-                                {% if user.is_staff or user.is_superuser %}
-                                    <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-100">Administration</a>
-                                {% endif %}
-                                <hr class="my-1">
-                                <form action="{% url 'logout' %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
-                                        Déconnexion
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <a href="{% url 'login' %}" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition">
-                        Connexion
-                    </a>
-                {% endif %}
-            </div>
-            
-            <!-- Menu burger (mobile) -->
-            <button id="menu-btn" class="block md:hidden text-gray-700">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-        
-        <!-- Menu Mobile -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <a href="{% url 'home' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Accueil</a>
-            <a href="{% url 'about' %}" class="block px-4 py-3 hover:bg-gray-50 transition">À propos</a>
-            <a href="{% url 'actions' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Nos actions</a>
-            <a href="{% url 'achievements' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Réalisations</a>
+<header class="bg-white shadow-md sticky top-0 z-50 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+        <div class="text-2xl font-bold text-green-800">AJ-GL Asbl</div>
+        <nav class="hidden md:flex space-x-6 lg:space-x-8">
+            <a href="{% url 'home' %}" class="nav-link text-gray-700 hover:text-green-700 transition">Accueil</a>
+            <a href="{% url 'about' %}" class="nav-link text-gray-700 hover:text-green-700 transition">À propos</a>
+            <a href="{% url 'actions' %}" class="nav-link text-gray-700 hover:text-green-700 transition">Nos actions</a>
+            <a href="{% url 'achievements' %}" class="nav-link text-gray-700 hover:text-green-700 transition">Réalisations</a>
             {% if not user.is_authenticated %}
-                <a href="{% url 'register' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Adhésion</a>
+                <a href="{% url 'register' %}" class="nav-link text-gray-700 hover:text-green-700 transition">Adhésion</a>
             {% endif %}
-            <a href="{% url 'contact' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Contact</a>
-            
+            <a href="{% url 'contact' %}" class="nav-link text-gray-700 hover:text-green-700 transition">Contact</a>
+        </nav>
+        <div class="hidden md:flex items-center space-x-4">
             {% if user.is_authenticated %}
-                <div class="border-t mt-2 pt-2">
-                    <div class="px-4 py-2 bg-gray-50 flex items-center space-x-3">
-                        {% if user.photo and user.photo.url %}
-                            <img src="{{ user.photo.url }}" alt="{{ user.nom_complet }}" 
-                                 class="w-10 h-10 rounded-full object-cover">
-                        {% else %}
-                            <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
-                                {{ user.nom_complet|slice:":2"|upper }}
-                            </div>
-                        {% endif %}
-                        <div>
-                            <p class="font-semibold">{{ user.nom_complet }}</p>
-                            <p class="text-sm text-gray-500">{{ user.email }}</p>
+                <div class="relative group">
+                    {% if user.photo and user.photo.url %}
+                        <img src="{{ user.photo.url }}" alt="{{ user.nom_complet }}" class="w-10 h-10 rounded-full object-cover border-2 border-green-200 cursor-pointer">
+                    {% else %}
+                        <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold cursor-pointer">
+                            {{ user.nom_complet|slice:":2"|upper }}
+                        </div>
+                    {% endif %}
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl hidden group-hover:block z-50">
+                        <div class="p-3 border-b"><p class="font-semibold truncate">{{ user.nom_complet }}</p><p class="text-sm text-gray-500 truncate">{{ user.email }}</p></div>
+                        <div class="py-2">
+                            <a href="{% url 'dashboard' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-tachometer-alt w-5 text-green-600"></i> Tableau de bord</a>
+                            <a href="{% url 'my_payments' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-credit-card w-5 text-green-600"></i> Mes contributions</a>
+                            <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-user-circle w-5 text-green-600"></i> Mon profil</a>
+                            {% if user.is_staff or user.is_superuser %}
+                                <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-100"><i class="fas fa-cogs w-5 text-gray-600"></i> Administration</a>
+                            {% endif %}
+                            <hr class="my-1">
+                            <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"><i class="fas fa-sign-out-alt w-5"></i> Déconnexion</button></form>
                         </div>
                     </div>
-                    <a href="{% url 'dashboard' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Tableau de bord</a>
-                    <a href="{% url 'my_payments' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Mes contributions</a>
-                    <a href="{% url 'profile' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Mon profil</a>
-                    {% if user.is_staff or user.is_superuser %}
-                        <a href="{% url 'admin:index' %}" class="block px-4 py-3 hover:bg-gray-50 transition">Administration</a>
-                    {% endif %}
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="w-full text-left px-4 py-3 text-red-600 hover:bg-gray-50 transition">
-                            Déconnexion
-                        </button>
-                    </form>
                 </div>
             {% else %}
-                <a href="{% url 'login' %}" class="block px-4 py-3 bg-orange-500 text-white text-center m-2 rounded-lg">
-                    Connexion
-                </a>
+                <a href="{% url 'login' %}" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"><i class="fas fa-key mr-1"></i> Connexion</a>
             {% endif %}
         </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <main class="container mx-auto px-4 py-8">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="bg-green-100 border-l-4 border-green-600 text-green-800 px-4 py-3 rounded mb-6">
-                    {{ message }}
+        <button id="menu-btn" class="block md:hidden text-gray-700 focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t w-full">
+        <div class="px-4 py-2 space-y-1">
+            <a href="{% url 'home' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-home w-5 text-green-600"></i> Accueil</a>
+            <a href="{% url 'about' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-info-circle w-5 text-green-600"></i> À propos</a>
+            <a href="{% url 'actions' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-hands-helping w-5 text-green-600"></i> Nos actions</a>
+            <a href="{% url 'achievements' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-trophy w-5 text-green-600"></i> Réalisations</a>
+            {% if not user.is_authenticated %}<a href="{% url 'register' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-user-plus w-5 text-green-600"></i> Adhésion</a>{% endif %}
+            <a href="{% url 'contact' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-envelope w-5 text-green-600"></i> Contact</a>
+            {% if user.is_authenticated %}
+                <hr class="my-2">
+                <div class="flex items-center space-x-3 py-2">
+                    {% if user.photo and user.photo.url %}<img src="{{ user.photo.url }}" class="w-10 h-10 rounded-full object-cover">{% else %}<div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">{{ user.nom_complet|slice:":2"|upper }}</div>{% endif %}
+                    <div><p class="font-semibold">{{ user.nom_complet }}</p><p class="text-sm text-gray-500">{{ user.email }}</p></div>
                 </div>
-            {% endfor %}
-        {% endif %}
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-gray-800 text-white mt-12 py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">AJ-GL Asbl - Association des Jumeaux des pays des Grands Lacs</p>
-            <p class="mb-2">Goma, Nord-Kivu, République Démocratique du Congo</p>
-            <p>+243 995 584 501 | contact@ajgl.org</p>
+                <a href="{% url 'dashboard' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-tachometer-alt w-5 text-green-600"></i> Tableau de bord</a>
+                <a href="{% url 'my_payments' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-credit-card w-5 text-green-600"></i> Mes contributions</a>
+                <a href="{% url 'profile' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-user-circle w-5 text-green-600"></i> Mon profil</a>
+                {% if user.is_staff or user.is_superuser %}<a href="{% url 'admin:index' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-cogs w-5 text-gray-600"></i> Administration</a>{% endif %}
+                <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit" class="w-full text-left py-2 text-red-600"><i class="fas fa-sign-out-alt w-5"></i> Déconnexion</button></form>
+            {% else %}
+                <a href="{% url 'login' %}" class="block bg-orange-500 text-white text-center py-2 rounded-lg mt-2"><i class="fas fa-key mr-1"></i> Connexion</a>
+            {% endif %}
         </div>
-    </footer>
+    </div>
+</header>
 
-    <script>
-        // Menu burger toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                mobileMenu.classList.toggle('hidden');
-            });
-            
-            // Fermer le menu en cliquant à l'extérieur
-            document.addEventListener('click', function(event) {
-                if (!mobileMenu.classList.contains('hidden')) {
-                    if (!menuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        }
-    </script>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 p-3 rounded {% if message.tags == 'success' %}bg-green-100 text-green-700 border-l-4 border-green-500{% elif message.tags == 'error' %}bg-red-100 text-red-700 border-l-4 border-red-500{% else %}bg-blue-100 text-blue-700 border-l-4 border-blue-500{% endif %}">
+                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-triangle{% else %}info-circle{% endif %} mr-2"></i> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="bg-gray-800 text-white mt-12 py-8">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <p class="mb-2"><i class="fas fa-handshake mr-2 text-orange-400"></i> AJ-GL Asbl - Association des Jumeaux des pays des Grands Lacs</p>
+        <p class="mb-2"><i class="fas fa-map-marker-alt mr-2 text-orange-400"></i> Goma, Nord-Kivu, République Démocratique du Congo</p>
+        <p><i class="fas fa-phone-alt mr-2 text-orange-400"></i> +243 995 584 501 | <i class="fas fa-envelope mr-2 text-orange-400"></i> contact@ajgl.org</p>
+    </div>
+</footer>
+
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.addEventListener('click', function(event) {
+            if (!mobileMenu.classList.contains('hidden') && !menuBtn.contains(event.target) && !mobileMenu.contains(event.target))
+                mobileMenu.classList.add('hidden');
+        });
+    }
+</script>
 </body>
 </html>

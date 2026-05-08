@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Cotisation{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div class="bg-gradient-to-r from-green-700 to-green-600 px-6 py-4">
+            <h1 class="text-2xl font-bold text-white"><i class="fas fa-plus-circle mr-2"></i> {{ form.instance.pk|yesno:"Modifier,Nouvelle" }} cotisation</h1>
+        </div>
+        <form method="post" class="p-6">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded">
+                <p class="font-bold text-red-700">Erreurs :</p>
+                <ul class="text-red-600 text-sm list-inside">{% for field in form %}{% for error in field.errors %}<li>{{ field.label }} : {{ error }}</li>{% endfor %}{% endfor %}</ul>
+            </div>
+            {% endif %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div><label class="block font-semibold mb-2">Titre *</label>{{ form.titre }}</div>
+                <div><label class="block font-semibold mb-2">Type *</label>{{ form.type }}</div>
+                <div><label class="block font-semibold mb-2">Obligatoire</label>{{ form.obligatoire }}</div>
+                <div><label class="block font-semibold mb-2">Date début *</label>{{ form.date_debut }}</div>
+                <div><label class="block font-semibold mb-2">Date fin *</label>{{ form.date_fin }}</div>
+                <div><label class="block font-semibold mb-2">Événement lié</label>{{ form.evenement }}</div>
+                <div><label class="block font-semibold mb-2">N° compte / RIB *</label>{{ form.numero_paiement }}</div>
+                <div><label class="block font-semibold mb-2">Bénéficiaire *</label>{{ form.nom_beneficiaire }}</div>
+            </div>
+            <div class="mb-4"><label class="block font-semibold mb-2">Description</label>{{ form.description }}</div>
+            <div class="flex justify-end gap-3 pt-4 border-t">
+                <a href="{% url 'dues' %}" class="bg-gray-200 px-6 py-2 rounded-lg">Annuler</a>
+                <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded-lg">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

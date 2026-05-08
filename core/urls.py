@@ -17,6 +17,10 @@ urlpatterns = [
     path('due/<int:pk>/', views.CotisationDetailView.as_view(), name='due_detail'),
     path('review/<int:pk>/', views.ValiderContributionView.as_view(), name='review_payment'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    path("contact/",views.ContactView.as_view(), name='contact')
+    path("contact/",views.ContactView.as_view(), name='contact'),
+    path('cellules/', views.CellulesView.as_view(), name='cellules'),
+    path('cellules/ajouter/', views.CelluleCreateView.as_view(), name='cellule_create'),
+
+
 
 ]

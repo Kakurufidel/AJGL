@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Mes contributions{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-bold text-green-800 mb-4">Mes contributions</h1>
+        <div class="w-24 h-1 bg-orange-500 mx-auto"></div>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Historique de tous vos paiements et cotisations</p>
+    </div>
+
+    {% if contributions %}
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Cotisation</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Montant</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Statut</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for contribution in contributions %}
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 text-gray-700">{{ contribution.cotisation.titre }}</td>
+                            <td class="px-6 py-4 text-gray-700 font-medium">{{ contribution.montant }} €</td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                    {% if contribution.statut == 'valide' %}bg-green-100 text-green-800
+                                    {% elif contribution.statut == 'en_attente' %}bg-yellow-100 text-yellow-800
+                                    {% else %}bg-red-100 text-red-800{% endif %}">
+                                    {% if contribution.statut == 'valide' %}
+                                        <i class="fas fa-check-circle mr-1"></i> Validée
+                                    {% elif contribution.statut == 'en_attente' %}
+                                        <i class="fas fa-clock mr-1"></i> En attente
+                                    {% else %}
+                                        <i class="fas fa-times-circle mr-1"></i> Rejetée
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-gray-500 text-sm">{{ contribution.date_creation|date:"d/m/Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="bg-gray-50 rounded-2xl p-12 text-center">
+            <i class="fas fa-receipt text-5xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 text-lg">Aucune contribution pour le moment.</p>
+            <a href="{% url 'pay' %}" class="inline-block mt-4 bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition">
+                <i class="fas fa-credit-card mr-2"></i> Effectuer un paiement
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

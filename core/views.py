@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from datetime import date
+from django.contrib.admin.views.decorators import staff_member_required
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
@@ -12,9 +13,9 @@ from django.db.models import Sum
 from django.utils import timezone
 from .forms import (
     UserForm, EmailAuthenticationForm, ProfilForm,
-    CotisationForm, ContributionForm, ValidationContributionForm
+    CotisationForm, ContributionForm, ValidationContributionForm,CelluleForm
 )
-from .models import User, Cotisation, Contribution, Evenement
+from .models import *
 
 
 # ==========================================
@@ -184,7 +185,6 @@ class MesContributionsView(View):
         contributions = Contribution.objects.filter(membre=request.user).select_related('cotisation').order_by('-date_creation')
         return render(request, 'core/my_payments.html', {'contributions': contributions})
 
-
 @method_decorator(login_required, name='dispatch')
 class SoumettreContributionView(View):
     def get(self, request):
@@ -297,3 +297,20 @@ class CotisationUpdateView(View):
             messages.success(request, f"Cotisation '{cotisation.titre}' mise à jour.")
             return redirect('dues')
         return render(request, 'core/due_form.html', {'form': form})
+class CellulesView(View):
+    def get(self, request):
+        cellules = Cellule.objects.filter(est_active=True)
+        return render(request, 'core/cellules.html', {'cellules': cellules})
+@method_decorator(staff_member_required, name='dispatch')
+class CelluleCreateView(View):
+    def get(self, request):
+        form = CelluleForm()
+        return render(request, 'core/cellule_form.html', {'form': form})
+
+    def post(self, request):
+        form = CelluleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cellule créée avec succès.")
+            return redirect('cellules')
+        return render(request, 'core/cellule_form.html', {'form': form})

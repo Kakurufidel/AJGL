@@ -5,237 +5,196 @@
 
 {% block content %}
 
-<!-- SLIDER -->
-<div class="relative w-full overflow-hidden rounded-xl mb-12" style="height: 65vh; min-height: 400px;">
-    
+<!-- SLIDER (reste inchangé, propre) -->
+<div class="relative w-full overflow-hidden rounded-xl mb-16 shadow-lg" style="height: 65vh; min-height: 420px;">
     <div class="slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-        <img src="/media/slider/silder04.jpg" alt="AJ-GL Asbl" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <div class="text-center text-white px-4">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">AJ-GL Asbl</h2>
-                <p class="text-lg md:text-xl mb-6">Ensemble pour les jumeaux des Grands Lacs</p>
-                <a href="{% url 'register' %}" class="bg-orange-500 hover:bg-orange-600 px-6 py-3 rounded-lg transition inline-block">
-                    Rejoindre
-                </a>
+        <img src="/media/slider/silder04.jpg" alt="AJ-GL Asbl" class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-3xl">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">AJ-GL Asbl</h2>
+                <p class="text-xl md:text-2xl mb-8 drop-shadow">Ensemble pour les jumeaux des Grands Lacs</p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg transition shadow-md inline-block">Rejoindre</a>
+                {% else %}
+                    <a href="{% url 'cellules' %}" class="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg transition shadow-md inline-block">Rejoindre une cellule</a>
+                {% endif %}
             </div>
         </div>
     </div>
-    
     <div class="slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-        <img src="/media/slider/silder05.jpg" alt="Formations" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <div class="text-center text-white px-4">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Formations gratuites</h2>
-                <p class="text-lg md:text-xl mb-6">Arts et métiers pour les jumeaux</p>
-                <a href="{% url 'actions' %}" class="bg-orange-500 hover:bg-orange-600 px-6 py-3 rounded-lg transition inline-block">
-                    En savoir plus
-                </a>
+        <img src="/media/slider/silder05.jpg" alt="Formations" class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-3xl">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Formations gratuites</h2>
+                <p class="text-xl md:text-2xl mb-8 drop-shadow">Arts et métiers pour les jumeaux</p>
+                <a href="{% url 'actions' %}" class="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg transition shadow-md inline-block">En savoir plus</a>
             </div>
         </div>
     </div>
-    
     <div class="slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-        <img src="/media/slider/slider.jpg" alt="Assistance" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <div class="text-center text-white px-4">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Assistance sociale</h2>
-                <p class="text-lg md:text-xl mb-6">Aide aux familles des jumeaux</p>
-                <a href="{% url 'achievements' %}" class="bg-orange-500 hover:bg-orange-600 px-6 py-3 rounded-lg transition inline-block">
-                    Voir nos actions
-                </a>
+        <img src="/media/slider/slider.jpg" alt="Assistance" class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-3xl">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Assistance sociale</h2>
+                <p class="text-xl md:text-2xl mb-8 drop-shadow">Aide aux familles des jumeaux</p>
+                <a href="{% url 'achievements' %}" class="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg transition shadow-md inline-block">Voir nos actions</a>
             </div>
         </div>
     </div>
-    
     <div class="slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-        <img src="/media/slider/slider02.jpg" alt="Événements" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <div class="text-center text-white px-4">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Événements</h2>
-                <p class="text-lg md:text-xl mb-6">Matchs, expositions, célébrations</p>
-                <a href="{% url 'achievements' %}" class="bg-orange-500 hover:bg-orange-600 px-6 py-3 rounded-lg transition inline-block">
-                    Voir nos réalisations
-                </a>
+        <img src="/media/slider/slider02.jpg" alt="Événements" class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent flex items-center justify-center">
+            <div class="text-center text-white px-4 max-w-3xl">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Événements</h2>
+                <p class="text-xl md:text-2xl mb-8 drop-shadow">Matchs, expositions, célébrations</p>
+                <a href="{% url 'achievements' %}" class="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg transition shadow-md inline-block">Voir nos réalisations</a>
             </div>
         </div>
     </div>
-    
-    <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition z-20">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-    </button>
-    <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition z-20">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-    </button>
-    
-    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
-        <button class="dot w-3 h-3 rounded-full bg-white" data-slide="0"></button>
-        <button class="dot w-3 h-3 rounded-full bg-white/50" data-slide="1"></button>
-        <button class="dot w-3 h-3 rounded-full bg-white/50" data-slide="2"></button>
-        <button class="dot w-3 h-3 rounded-full bg-white/50" data-slide="3"></button>
+    <button id="prev" class="absolute left-6 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition z-20 backdrop-blur-sm"><i class="fas fa-chevron-left text-xl"></i></button>
+    <button id="next" class="absolute right-6 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition z-20 backdrop-blur-sm"><i class="fas fa-chevron-right text-xl"></i></button>
+    <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-20">
+        <button class="dot w-3 h-3 rounded-full bg-white/70 transition-all duration-300" data-slide="0"></button>
+        <button class="dot w-3 h-3 rounded-full bg-white/30 transition-all duration-300" data-slide="1"></button>
+        <button class="dot w-3 h-3 rounded-full bg-white/30 transition-all duration-300" data-slide="2"></button>
+        <button class="dot w-3 h-3 rounded-full bg-white/30 transition-all duration-300" data-slide="3"></button>
     </div>
 </div>
 
 <!-- Message utilisateur -->
-<div class="max-w-7xl mx-auto px-4 reveal">
+<div class="max-w-7xl mx-auto px-4 mb-12 reveal">
     {% if user.is_authenticated %}
-    <div class="bg-green-50 border-l-4 border-green-600 p-4 mb-8 rounded">
-        <p class="text-green-800">Bonjour <strong>{{ user.nom_complet }}</strong> !</p>
-        <p class="text-green-700 text-sm mt-1">
-            Consultez <a href="{% url 'my_payments' %}" class="underline">vos contributions</a> ou 
-            <a href="{% url 'pay' %}" class="underline">effectuez un paiement</a>.
-        </p>
+    <div class="bg-gray-50 border-l-4 border-green-500 p-5 rounded-lg shadow-sm transition hover:shadow-md">
+        <div class="flex items-center gap-3"><i class="fas fa-user-check text-green-600 text-xl"></i><p class="text-gray-800 text-lg">Bonjour <strong>{{ user.nom_complet }}</strong> !</p></div>
+        <p class="text-gray-600 text-sm mt-2 ml-9">Consultez <a href="{% url 'my_payments' %}" class="text-green-600 hover:underline">vos contributions</a> ou <a href="{% url 'cellules' %}" class="text-green-600 hover:underline">rejoignez une cellule près de chez vous</a>.</p>
     </div>
     {% else %}
-    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded">
-        <p>Bienvenue sur le site de l'AJ-GL Asbl !</p>
-        <p class="text-sm mt-1"><a href="{% url 'login' %}" class="underline">Connectez-vous</a> pour accéder à plus de contenu.</p>
+    <div class="bg-gray-50 border-l-4 border-blue-400 p-5 rounded-lg shadow-sm transition hover:shadow-md">
+        <div class="flex items-center gap-3"><i class="fas fa-smile-wink text-blue-500 text-xl"></i><p class="text-gray-800 text-lg">Bienvenue sur le site de l'AJ-GL Asbl !</p></div>
+        <p class="text-gray-600 text-sm mt-2 ml-9"><a href="{% url 'login' %}" class="text-blue-600 hover:underline">Connectez-vous</a> pour accéder à plus de contenu.</p>
     </div>
     {% endif %}
 </div>
 
 <!-- Bienvenue -->
-<div class="text-center mb-12 reveal">
-    <h1 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Bienvenue à l'AJ-GL Asbl</h1>
-    <div class="w-20 h-1 bg-orange-500 mx-auto mb-4"></div>
-    <p class="text-gray-700 max-w-2xl mx-auto">
-        L'Association des Jumeaux des pays des Grands Lacs (RDC, Rwanda, Burundi) accompagne 
-        les jumeaux, jumelles, triplés et leurs familles depuis 2021.
-    </p>
+<div class="text-center mb-16 reveal">
+    <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">Bienvenue à l'AJ-GL Asbl</h1>
+    <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
+    <p class="text-gray-600 max-w-3xl mx-auto text-lg">L'Association des Jumeaux des pays des Grands Lacs (RDC, Rwanda, Burundi) accompagne les jumeaux, jumelles, triplés et leurs familles depuis 2021.</p>
 </div>
 
 <!-- Cartes actions -->
-<div class="grid md:grid-cols-3 gap-8 mb-16">
-    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition reveal">
-        <img src="/media/images/action.jpg" class="w-full h-48 object-cover">
-        <div class="p-5">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Formations</h3>
-            <p class="text-gray-600 mb-3">Arts plastiques, décoration, coupe-couture, photo et vidéo</p>
-            <a href="{% url 'actions' %}" class="text-orange-500 hover:underline">En savoir plus →</a>
+<div class="grid md:grid-cols-3 gap-8 mb-20">
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group reveal">
+        <img src="/media/images/action.jpg" class="w-full h-56 object-cover transition duration-500 group-hover:scale-105">
+        <div class="p-6">
+            <h3 class="text-2xl font-bold text-green-800 mb-2"><i class="fas fa-graduation-cap text-orange-500 mr-2"></i> Formations</h3>
+            <p class="text-gray-600 mb-4">Arts plastiques, décoration, coupe-couture, photo et vidéo</p>
+            <a href="{% url 'actions' %}" class="text-orange-500 font-semibold inline-flex items-center gap-1 hover:gap-2 transition-all">En savoir plus <i class="fas fa-arrow-right text-sm"></i></a>
         </div>
     </div>
-    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition reveal">
-        <img src="/media/images/activite.jpg" class="w-full h-48 object-cover">
-        <div class="p-5">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Assistance sociale</h3>
-            <p class="text-gray-600 mb-3">Aide aux deuils, mariages, naissances multiples, incendies</p>
-            <a href="{% url 'actions' %}" class="text-orange-500 hover:underline">En savoir plus →</a>
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group reveal">
+        <img src="/media/images/activite.jpg" class="w-full h-56 object-cover transition duration-500 group-hover:scale-105">
+        <div class="p-6">
+            <h3 class="text-2xl font-bold text-green-800 mb-2"><i class="fas fa-heart text-orange-500 mr-2"></i> Assistance sociale</h3>
+            <p class="text-gray-600 mb-4">Aide aux deuils, mariages, naissances multiples, incendies</p>
+            <a href="{% url 'actions' %}" class="text-orange-500 font-semibold inline-flex items-center gap-1 hover:gap-2 transition-all">En savoir plus <i class="fas fa-arrow-right text-sm"></i></a>
         </div>
     </div>
-    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition reveal">
-        <img src="/media/images/blanche.jpg" class="w-full h-48 object-cover">
-        <div class="p-5">
-            <h3 class="text-xl font-bold text-green-800 mb-2">Événements</h3>
-            <p class="text-gray-600 mb-3">Matchs de football, expositions, célébrations</p>
-            <a href="{% url 'achievements' %}" class="text-orange-500 hover:underline">Voir les réalisations →</a>
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group reveal">
+        <img src="/media/images/blanche.jpg" class="w-full h-56 object-cover transition duration-500 group-hover:scale-105">
+        <div class="p-6">
+            <h3 class="text-2xl font-bold text-green-800 mb-2"><i class="fas fa-calendar-alt text-orange-500 mr-2"></i> Événements</h3>
+            <p class="text-gray-600 mb-4">Matchs de football, expositions, célébrations</p>
+            <a href="{% url 'achievements' %}" class="text-orange-500 font-semibold inline-flex items-center gap-1 hover:gap-2 transition-all">Voir les réalisations <i class="fas fa-arrow-right text-sm"></i></a>
         </div>
     </div>
 </div>
 
-<!-- Actualités dynamiques -->
+<!-- Actualités -->
 {% if actualites %}
-<div class="mb-16 reveal">
-    <h2 class="text-2xl font-bold text-green-800 text-center mb-8">Actualités récentes</h2>
+<div class="mb-20">
+    <h2 class="text-3xl font-bold text-green-800 text-center mb-10 reveal">Actualités récentes</h2>
     <div class="grid md:grid-cols-3 gap-8">
         {% for actu in actualites %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden reveal">
-            <img src="{{ actu.image_principale.url|default:'/media/images/default.jpg' }}" class="w-full h-48 object-cover">
-            <div class="p-5">
-                <p class="text-orange-500 text-sm">{{ actu.date_publication|date:"d/m/Y" }}</p>
-                <h3 class="text-xl font-bold text-green-800 mb-2">{{ actu.titre }}</h3>
-                <p class="text-gray-600">{{ actu.get_extrait }}</p>
-            </div>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition reveal">
+            <img src="{{ actu.image_principale.url|default:'/media/images/default.jpg' }}" class="w-full h-56 object-cover">
+            <div class="p-6"><p class="text-orange-500 text-sm mb-2"><i class="far fa-calendar-alt mr-1"></i> {{ actu.date_publication|date:"d/m/Y" }}</p><h3 class="text-xl font-bold text-green-800 mb-2">{{ actu.titre }}</h3><p class="text-gray-600">{{ actu.get_extrait }}</p></div>
         </div>
         {% endfor %}
     </div>
 </div>
 {% endif %}
 
-<!-- Chiffres clés -->
-<div class="bg-green-700 text-white py-12 rounded-xl mb-12 reveal">
-    <div class="text-center">
-        <h2 class="text-2xl font-bold mb-8">AJ-GL Asbl en chiffres</h2>
-        <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div>
-                <div class="text-4xl font-bold">1000+</div>
-                <div class="mt-1">Familles assistées</div>
-            </div>
-            <div>
-                <div class="text-4xl font-bold">50+</div>
-                <div class="mt-1">Jumeaux au 1er anniversaire</div>
-            </div>
-            <div>
-                <div class="text-4xl font-bold">3</div>
-                <div class="mt-1">Pays d'action</div>
-            </div>
+<!-- Chiffres clés (fond gris clair, animations) -->
+<div class="bg-gray-50 rounded-2xl py-16 px-6 mb-20 shadow-sm reveal">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-2">L'AJ-GL Asbl en chiffres</h2>
+        <div class="w-16 h-0.5 bg-orange-400 mx-auto"></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="text-center bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="text-5xl font-bold text-orange-500 mb-2">1000+</div>
+            <p class="text-gray-700 font-semibold">Familles assistées</p>
+            <p class="text-gray-500 text-sm mt-1">dans les camps et quartiers</p>
+        </div>
+        <div class="text-center bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="text-5xl font-bold text-orange-500 mb-2">50+</div>
+            <p class="text-gray-700 font-semibold">Jumeaux</p>
+            <p class="text-gray-500 text-sm mt-1">au 1er anniversaire</p>
+        </div>
+        <div class="text-center bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="text-5xl font-bold text-orange-500 mb-2">3</div>
+            <p class="text-gray-700 font-semibold">Pays d'action</p>
+            <p class="text-gray-500 text-sm mt-1">RDC, Rwanda, Burundi</p>
         </div>
     </div>
 </div>
 
-<!-- Appel à action -->
-<div class="bg-orange-500 text-white py-12 rounded-xl text-center reveal">
-    <h2 class="text-2xl font-bold mb-4">Prêt à nous rejoindre ?</h2>
-    <p class="mb-6">Devenez membre de l'AJ-GL Asbl et participez à nos actions</p>
-    <div class="flex flex-wrap gap-4 justify-center">
-        <a href="{% url 'register' %}" class="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-            S'inscrire maintenant
-        </a>
-        <a href="{% url 'contact' %}" class="border-2 border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition">
-            Nous contacter
-        </a>
+<!-- Appel à action (fond blanc, bordure orange) -->
+<div class="bg-white rounded-2xl py-14 px-6 text-center border-2 border-gray-100 shadow-sm reveal">
+    <i class="fas fa-hands-helping text-5xl mb-4 text-orange-400"></i>
+    <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Prêt à nous rejoindre ?</h2>
+    <p class="text-lg mb-8 text-gray-600 max-w-2xl mx-auto">Devenez membre de l'AJ-GL Asbl et participez à nos actions</p>
+    <div class="flex flex-wrap gap-5 justify-center">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="bg-orange-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition transform hover:scale-105 shadow-md"><i class="fas fa-user-plus mr-2"></i> S'inscrire maintenant</a>
+        {% else %}
+            <a href="{% url 'cellules' %}" class="bg-orange-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition transform hover:scale-105 shadow-md"><i class="fas fa-map-marker-alt mr-2"></i> Rejoindre une cellule</a>
+        {% endif %}
+        <a href="{% url 'contact' %}" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition transform hover:scale-105"><i class="fas fa-phone-alt mr-2"></i> Nous contacter</a>
     </div>
 </div>
 
 <script>
-    // ========== SLIDER ==========
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const dots = document.querySelectorAll('.dot');
     let interval;
-    
     function showSlide(index) {
         if (index < 0) index = slides.length - 1;
         if (index >= slides.length) index = 0;
         currentSlide = index;
-        slides.forEach((s, i) => { s.style.opacity = i === index ? '1' : '0'; });
-        dots.forEach((d, i) => {
-            if (i === index) {
-                d.classList.remove('bg-white/50');
-                d.classList.add('bg-white');
-            } else {
-                d.classList.remove('bg-white');
-                d.classList.add('bg-white/50');
-            }
-        });
+        slides.forEach((s,i) => s.style.opacity = i === index ? '1' : '0');
+        dots.forEach((d,i) => i === index ? (d.classList.remove('bg-white/30'), d.classList.add('bg-white/70'), d.classList.add('scale-125')) : (d.classList.remove('bg-white/70'), d.classList.remove('scale-125'), d.classList.add('bg-white/30')));
     }
-    
-    function next() { showSlide(currentSlide + 1); reset(); }
-    function prev() { showSlide(currentSlide - 1); reset(); }
-    
-    function start() { interval = setInterval(() => next(), 5000); }
-    function reset() { clearInterval(interval); start(); }
-    
+    function next(){ showSlide(currentSlide + 1); resetInterval(); }
+    function prev(){ showSlide(currentSlide - 1); resetInterval(); }
+    function startAuto(){ interval = setInterval(next, 6000); }
+    function resetInterval(){ clearInterval(interval); startAuto(); }
     document.getElementById('prev')?.addEventListener('click', prev);
     document.getElementById('next')?.addEventListener('click', next);
-    dots.forEach((dot, i) => dot.addEventListener('click', () => { showSlide(i); reset(); }));
-    
-    showSlide(0);
-    start();
-    
-    // ========== SCROLL REVEAL ==========
+    dots?.forEach((d,i)=> d.addEventListener('click',()=>{ showSlide(i); resetInterval(); }));
+    showSlide(0); startAuto();
+
+    // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
-    
-    function checkReveal() {
-        const windowHeight = window.innerHeight;
-        const revealPoint = 120;
-        
+    function checkReveal(){
+        const h = window.innerHeight;
         reveals.forEach(el => {
-            const top = el.getBoundingClientRect().top;
-            if (top < windowHeight - revealPoint) {
-                el.classList.add('active');
-            }
+            if(el.getBoundingClientRect().top < h - 100) el.classList.add('active');
         });
     }
-    
     reveals.forEach(el => el.classList.add('reveal-init'));
     checkReveal();
     window.addEventListener('scroll', checkReveal);
@@ -243,15 +202,10 @@
 </script>
 
 <style>
-    .reveal-init {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal-init.active {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    .reveal-init { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-init.active { opacity: 1; transform: translateY(0); }
+    .slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .dot { transition: all 0.3s ease; }
 </style>
 
 {% endblock %}

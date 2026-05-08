@@ -13,6 +13,26 @@
         </div>
 
         <form method="post" enctype="multipart/form-data" class="p-6">
+            {% if form.errors %}
+            <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6 shadow-sm">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl mr-3 mt-0.5"></i>
+                    <div>
+                        <p class="font-bold text-red-700 mb-1">Veuillez corriger les erreurs suivantes :</p>
+                        <ul class="text-red-600 text-sm space-y-1 list-disc list-inside">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li><span class="font-medium">{{ field.label }} :</span> {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             {% csrf_token %}
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
