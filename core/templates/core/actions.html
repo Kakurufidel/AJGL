@@ -5,141 +5,164 @@
 
 {% block content %}
 
-<div class="max-w-7xl mx-auto px-3 sm:px-4">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <div class="text-center mb-8 sm:mb-12">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-green-800 mb-4">Nos actions</h1>
-        <div class="w-20 h-1 bg-orange-500 mx-auto"></div>
-        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+    <div class="text-center mb-12 reveal">
+        <h1 class="text-4xl sm:text-5xl font-bold text-green-800 mb-4">Nos actions</h1>
+        <div class="w-24 h-0.5 bg-green-300 mx-auto"></div>
+        <p class="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">
             Découvrez nos différentes actions sociales, humanitaires et éducatives
         </p>
     </div>
 
     <!-- Action caritative -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden mb-10 reveal">
         <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/2">
-                <img src="/media/images/action.jpg" alt="Actions caritatives" class="w-full h-64 md:h-80 object-cover">
+            <div class="md:w-1/2 overflow-hidden">
+                <!-- Ancienne URL : /media/images/action.jpg -->
+                <img src="https://res.cloudinary.com/dtr8o0saj/image/upload/v1778334284/ajgl/images/action.jpg" alt="Actions caritatives" class="w-full h-80 object-cover transition duration-700 hover:scale-105">
             </div>
-            <div class="md:w-1/2 p-6 md:p-8">
-                <div class="flex items-center mb-3">
-                    <i class="fas fa-handshake text-3xl text-orange-500 mr-3"></i>
+            <div class="md:w-1/2 p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-handshake text-green-600 text-xl"></i>
+                    </div>
                     <h2 class="text-2xl font-bold text-green-800">Actions caritatives</h2>
                 </div>
                 <p class="text-gray-700 mb-4 leading-relaxed">
                     L'AJ-GL Asbl mène des actions sociales pour soutenir les familles des jumeaux en situation de vulnérabilité :
                 </p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
-                    <li>Assistance lors des deuils</li>
-                    <li>Soutien pour les mariages</li>
-                    <li>Aide aux victimes d'incendies</li>
-                    <li>Accompagnement des naissances multiples</li>
-                    <li>Assistance humanitaire dans les camps (1000+ familles en 2024)</li>
+                <ul class="space-y-2 mb-6">
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Assistance lors des deuils</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Soutien pour les mariages</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Aide aux victimes d'incendies</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Accompagnement des naissances multiples</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Assistance humanitaire dans les camps (1000+ familles en 2024)</li>
                 </ul>
-                <a href="{% url 'register' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
-                    <i class="fas fa-user-plus mr-1"></i> Participer à nos actions
+                <a href="{% url 'register' %}" class="inline-block bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-user-plus mr-2"></i> Participer à nos actions
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Apostolats / Visites sociales -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden mb-10 reveal">
         <div class="flex flex-col md:flex-row-reverse">
-            <div class="md:w-1/2">
-                <img src="/media/images/apostola.jpeg" alt="Apostolats" class="w-full h-64 md:h-80 object-cover">
+            <div class="md:w-1/2 overflow-hidden">
+                <!-- Ancienne URL : /media/images/apostola.jpeg -->
+                <img src="https://res.cloudinary.com/dtr8o0saj/image/upload/v1778334287/ajgl/images/apostola.jpg" alt="Apostolats" class="w-full h-80 object-cover transition duration-700 hover:scale-105">
             </div>
-            <div class="md:w-1/2 p-6 md:p-8">
-                <div class="flex items-center mb-3">
-                    <i class="fas fa-hand-holding-heart text-3xl text-orange-500 mr-3"></i>
+            <div class="md:w-1/2 p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-hand-holding-heart text-green-600 text-xl"></i>
+                    </div>
                     <h2 class="text-2xl font-bold text-green-800">Apostolats / Visites sociales</h2>
                 </div>
                 <p class="text-gray-700 mb-4 leading-relaxed">
                     Des visites régulières sont organisées pour apporter réconfort et soutien aux familles :
                 </p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
-                    <li>Visite aux malades</li>
-                    <li>Réconfort des familles endeuillées</li>
-                    <li>Soutien psychologique aux jumeaux</li>
-                    <li>Création de liens de solidarité</li>
-                    <li>Célébrations spirituelles et culturelles</li>
+                <ul class="space-y-2 mb-6">
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Visite aux malades</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Réconfort des familles endeuillées</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Soutien psychologique aux jumeaux</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Création de liens de solidarité</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Célébrations spirituelles et culturelles</li>
                 </ul>
-                <a href="{% url 'contact' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
-                    <i class="fas fa-arrow-right mr-1"></i> Nous rejoindre
+                <a href="{% url 'contact' %}" class="inline-block bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-arrow-right mr-2"></i> Nous rejoindre
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Formations professionnelles -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden mb-10 reveal">
         <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/2">
-                <img src="/media/images/activite.jpg" alt="Formations" class="w-full h-64 md:h-80 object-cover">
+            <div class="md:w-1/2 overflow-hidden">
+                <!-- Ancienne URL : /media/images/activite.jpg -->
+                <img src="https://res.cloudinary.com/dtr8o0saj/image/upload/v1778334285/ajgl/images/activite.jpg" alt="Formations" class="w-full h-80 object-cover transition duration-700 hover:scale-105">
             </div>
-            <div class="md:w-1/2 p-6 md:p-8">
-                <div class="flex items-center mb-3">
-                    <i class="fas fa-graduation-cap text-3xl text-orange-500 mr-3"></i>
+            <div class="md:w-1/2 p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                    </div>
                     <h2 class="text-2xl font-bold text-green-800">Formations gratuites</h2>
                 </div>
                 <p class="text-gray-700 mb-4 leading-relaxed">
                     Des formations en arts et métiers sont offertes gratuitement aux jumeaux :
                 </p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
-                    <li>Décoration d'intérieur</li>
-                    <li>Arts plastiques</li>
-                    <li>Photographie et vidéo</li>
-                    <li>Coupe et couture</li>
-                    <li>Exposition publique des œuvres (2023)</li>
+                <ul class="space-y-2 mb-6">
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Décoration d'intérieur</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Arts plastiques</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Photographie et vidéo</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Coupe et couture</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Exposition publique des œuvres (2023)</li>
                 </ul>
-                <a href="{% url 'register' %}" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
-                    <i class="fas fa-arrow-right mr-1"></i> S'inscrire à la formation
+                <a href="{% url 'register' %}" class="inline-block bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-arrow-right mr-2"></i> S'inscrire à la formation
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Lipasa Services -->
-    <div class="bg-white rounded-2xl py-14 px-6 text-center border-2 border-gray-100 shadow-sm reveal">
-        <div class="flex items-center justify-center mb-3">
-            <i class="fas fa-utensils text-3xl mr-2"></i>
-            <h2 class="text-2xl font-bold">Lipasa Services</h2>
+    <div class="bg-green-50 rounded-2xl py-12 px-6 text-center reveal mb-10">
+        <div class="flex items-center justify-center mb-4">
+            <i class="fas fa-utensils text-4xl text-green-700 mr-3"></i>
+            <h2 class="text-3xl font-bold text-green-800">Lipasa Services</h2>
         </div>
-        <p class="mb-3 max-w-2xl mx-auto">
+        <p class="mb-3 max-w-2xl mx-auto text-gray-700">
             Service traiteur et protocole créé pour offrir une activité génératrice de revenus (AGR) aux jumeaux.
         </p>
-        <p class="text-sm opacity-90 mb-4">Prestations : traiteur, protocole, décoration d'événements</p>
-        <a href="{% url 'contact' %}" class="inline-block bg-white text-green-800 px-6 py-2 rounded hover:bg-gray-100 transition">
-            <i class="fas fa-phone-alt mr-1"></i> Contacter Lipasa Services
+        <p class="text-gray-600 mb-5">Prestations : traiteur, protocole, décoration d'événements</p>
+        <a href="{% url 'contact' %}" class="inline-block bg-green-700 hover:bg-green-800 text-white px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md">
+            <i class="fas fa-phone-alt mr-2"></i> Contacter Lipasa Services
         </a>
     </div>
 
     <!-- Émission radio -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden mt-8">
+    <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden reveal">
         <div class="flex flex-col md:flex-row-reverse">
-            <div class="md:w-1/2">
-                <img src="/media/images/radio.jpg" alt="Radio Océan FM" class="w-full h-64 md:h-80 object-cover">
+            <div class="md:w-1/2 overflow-hidden">
+                <!-- Ancienne URL : /media/images/radio.jpg (image non listée, on garde une image générique) -->
+                <img src="https://res.cloudinary.com/dtr8o0saj/image/upload/v1778334285/ajgl/images/activite.jpg" alt="Radio Océan FM" class="w-full h-80 object-cover transition duration-700 hover:scale-105">
             </div>
-            <div class="md:w-1/2 p-6 md:p-8">
-                <div class="flex items-center mb-3">
-                    <i class="fas fa-microphone-alt text-3xl text-orange-500 mr-3"></i>
+            <div class="md:w-1/2 p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-microphone-alt text-green-600 text-xl"></i>
+                    </div>
                     <h2 class="text-2xl font-bold text-green-800">Émission radio</h2>
                 </div>
                 <p class="text-gray-700 mb-4 leading-relaxed">
                     Une émission hebdomadaire sur Radio Océan FM pour sensibiliser et informer sur les jumeaux :
                 </p>
-                <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
-                    <li>Sensibilisation aux droits des jumeaux</li>
-                    <li>Témoignages de jumeaux et parents</li>
-                    <li>Annonce des événements à venir</li>
-                    <li>Échanges avec les partenaires</li>
+                <ul class="space-y-2 mb-6">
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Sensibilisation aux droits des jumeaux</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Témoignages de jumeaux et parents</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Annonce des événements à venir</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600 text-sm"></i> Échanges avec les partenaires</li>
                 </ul>
-                <a href="#" target="_blank" class="inline-block bg-orange-500 text-white px-5 py-2 rounded hover:bg-orange-600 transition text-sm">
-                    <i class="fas fa-external-link-alt mr-1"></i> Écouter en ligne
+                <a href="#" target="_blank" class="inline-block bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-external-link-alt mr-2"></i> Écouter en ligne
                 </a>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    const reveals = document.querySelectorAll('.reveal');
+    function checkReveal(){ reveals.forEach(el => { if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active'); }); }
+    reveals.forEach(el => el.classList.add('reveal-init'));
+    checkReveal();
+    window.addEventListener('scroll', checkReveal);
+</script>
+<style>
+    .reveal-init { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+    .reveal-init.active { opacity: 1; transform: translateY(0); }
+</style>
 {% endblock %}
