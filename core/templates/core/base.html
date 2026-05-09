@@ -64,25 +64,39 @@
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t w-full">
         <div class="px-4 py-2 space-y-1">
-            <a href="{% url 'home' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-home w-5 text-green-600"></i> Accueil</a>
-            <a href="{% url 'about' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-info-circle w-5 text-green-600"></i> À propos</a>
-            <a href="{% url 'actions' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-hands-helping w-5 text-green-600"></i> Nos actions</a>
-            <a href="{% url 'achievements' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-trophy w-5 text-green-600"></i> Réalisations</a>
-            {% if not user.is_authenticated %}<a href="{% url 'register' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-user-plus w-5 text-green-600"></i> Adhésion</a>{% endif %}
-            <a href="{% url 'contact' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-envelope w-5 text-green-600"></i> Contact</a>
+            <a href="{% url 'home' %}" class="block py-2 hover:bg-gray-50 transition">Accueil</a>
+            <a href="{% url 'about' %}" class="block py-2 hover:bg-gray-50 transition">À propos</a>
+            <a href="{% url 'actions' %}" class="block py-2 hover:bg-gray-50 transition">Nos actions</a>
+            <a href="{% url 'achievements' %}" class="block py-2 hover:bg-gray-50 transition">Réalisations</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="block py-2 hover:bg-gray-50 transition">Adhésion</a>
+            {% endif %}
+            <a href="{% url 'contact' %}" class="block py-2 hover:bg-gray-50 transition">Contact</a>
+            
             {% if user.is_authenticated %}
                 <hr class="my-2">
                 <div class="flex items-center space-x-3 py-2">
-                    {% if user.photo and user.photo.url %}<img src="{{ user.photo.url }}" class="w-10 h-10 rounded-full object-cover">{% else %}<div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">{{ user.nom_complet|slice:":2"|upper }}</div>{% endif %}
+                    {% if user.photo and user.photo.url %}
+                        <img src="{{ user.photo.url }}" class="w-10 h-10 rounded-full object-cover">
+                    {% else %}
+                        <div class="w-10 h-10 rounded-full bg-green-700 text-white flex items-center justify-center font-bold">
+                            {{ user.nom_complet|slice:":2"|upper }}
+                        </div>
+                    {% endif %}
                     <div><p class="font-semibold">{{ user.nom_complet }}</p><p class="text-sm text-gray-500">{{ user.email }}</p></div>
                 </div>
-                <a href="{% url 'dashboard' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-tachometer-alt w-5 text-green-600"></i> Tableau de bord</a>
-                <a href="{% url 'my_payments' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-credit-card w-5 text-green-600"></i> Mes contributions</a>
-                <a href="{% url 'profile' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-user-circle w-5 text-green-600"></i> Mon profil</a>
-                {% if user.is_staff or user.is_superuser %}<a href="{% url 'admin:index' %}" class="block py-2 hover:bg-gray-50"><i class="fas fa-cogs w-5 text-gray-600"></i> Administration</a>{% endif %}
-                <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit" class="w-full text-left py-2 text-red-600"><i class="fas fa-sign-out-alt w-5"></i> Déconnexion</button></form>
+                <a href="{% url 'dashboard' %}" class="block py-2 hover:bg-gray-50 transition">Tableau de bord</a>
+                <a href="{% url 'my_payments' %}" class="block py-2 hover:bg-gray-50 transition">Mes contributions</a>
+                <a href="{% url 'profile' %}" class="block py-2 hover:bg-gray-50 transition">Mon profil</a>
+                {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin:index' %}" class="block py-2 hover:bg-gray-50 transition">Administration</a>
+                {% endif %}
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left py-2 text-red-600 transition">Déconnexion</button>
+                </form>
             {% else %}
-                <a href="{% url 'login' %}" class="block bg-orange-500 text-white text-center py-2 rounded-lg mt-2"><i class="fas fa-key mr-1"></i> Connexion</a>
+                <a href="{% url 'login' %}" class="block bg-orange-500 text-white text-center py-2 rounded-lg mt-2">Connexion</a>
             {% endif %}
         </div>
     </div>

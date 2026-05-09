@@ -7,6 +7,21 @@ from pathlib import Path
 import os
 import dj_database_url
 from urllib.parse import urlparse
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# ==========================================
+# Cloudinary Configuration
+# ==========================================
+if os.environ.get('CLOUD_NAME') and os.environ.get('API_KEY') and os.environ.get('API_SECRET'):
+    cloudinary.config(
+        cloud_name=os.environ.get('CLOUD_NAME'),
+        api_key=os.environ.get('API_KEY'),
+        api_secret=os.environ.get('API_SECRET'),
+        secure=True
+    )
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
