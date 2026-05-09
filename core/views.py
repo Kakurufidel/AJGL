@@ -314,3 +314,28 @@ class CelluleCreateView(View):
             messages.success(request, "Cellule créée avec succès.")
             return redirect('cellules')
         return render(request, 'core/cellule_form.html', {'form': form})
+    
+
+from django.core.mail import send_mail
+
+class ContactView(View):
+    def get(self, request):
+        return render(request, 'core/contact.html')
+
+    def post(self, request):
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        telephone = request.POST.get('telephone')
+        message = request.POST.get('message')
+        
+        full_message = f"Nom: {nom}\nEmail: {email}\nTéléphone: {telephone}\n\nMessage:\n{message}"
+        
+        send_mail(
+            subject=f"Contact AJ-GL Asbl - {nom}",
+            message=full_message,
+            from_email=email,
+            recipient_list=['kakurukalinda2@gmail.com'],
+            fail_silently=False,
+        )
+        messages.success(request, "Votre message a été envoyé avec succès. Nous vous répondrons dans les meilleurs délais.")
+        return redirect('contact')
