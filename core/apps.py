@@ -16,9 +16,9 @@ class CoreConfig(AppConfig):
         if 'migrate' not in sys.argv and 'collectstatic' not in sys.argv:
             try:
                 call_command('migrate', interactive=False)
-                print("✅ Migrations appliquées automatiquement")
+                print("Migrations appliquées automatiquement")
             except Exception as e:
-                print(f"⚠️ Erreur migrations: {e}")
+                print(f" Erreur migrations: {e}")
         
         # Créer un superutilisateur automatiquement s'il n'existe pas
         try:
@@ -29,8 +29,8 @@ class CoreConfig(AppConfig):
                     email='admin@ajgl.org',
                     nom_complet='Admin AJGL',
                     telephone='+243000000000',
-                    password='admin123'
+                    password='0000'
                 )
-                print("✅ Superutilisateur créé: admin@ajgl.org / admin123")
+                print("Superutilisateur créé: admin@ajgl.org / admin123")
         except Exception as e:
-            print(f"⚠️ Erreur création superuser: {e}")
+            print(f"Erreur création superuser: {e}")
